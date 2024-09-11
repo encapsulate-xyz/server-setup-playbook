@@ -1,0 +1,24 @@
+[Unit]
+Description=Prometheus Node Exporter
+After=network-online.target
+
+[Service]
+User=root
+Group=root
+ExecStart=/usr/local/bin/node_exporter
+
+SyslogIdentifier=node_exporter
+Restart=always
+RestartSec=1
+StartLimitInterval=0
+NoNewPrivileges=yes
+
+ProtectSystem=strict
+ProtectControlGroups=true
+ProtectKernelModules=true
+ProtectKernelTunables=yes
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

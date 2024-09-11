@@ -1,0 +1,4 @@
+---
+- name: Install node exporter
+  import_tasks: install_node_exporter.yml
+  
