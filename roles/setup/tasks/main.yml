@@ -1,4 +1,6 @@
 ---
 - name: Install node exporter
   import_tasks: install_node_exporter.yml
-  
+
+- name: Install promtail
+  import_tasks: install_promtail.yml
