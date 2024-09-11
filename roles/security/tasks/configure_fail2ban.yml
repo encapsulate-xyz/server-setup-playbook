@@ -1,0 +1,25 @@
+---
+- name: Install fail2ban
+  apt:
+    name: fail2ban
+    state: present
+    update_cache: yes
+
+- name: Configure ssh jail 
+  become: true
+  blockinfile:
+    path: /etc/fail2ban/jail.d/ssh.local
+    block: |
+      [sshd]
+      enabled = true
+      banaction = ufw
+      port = {{ ssh_port | default('ssh') }}
+      filter = sshd
+      logpath = /var/log/auth.log
+      maxretry = 5
+    create: true
+
+- name: Restart fail2ban
+  service:
+    name: fail2ban
+    state: restarted
