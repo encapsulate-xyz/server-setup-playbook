@@ -1,0 +1,44 @@
+- name: Install auditd
+  apt:
+    name:
+      - auditd
+      - audispd-plugins
+    state: present
+
+- name: Remove default auditd rules
+  file:
+    path: /etc/audit/rules.d/audit.rules
+    state: absent
+
+- name: Copy audit.rules service file
+  copy:
+    src: 'audit.rules'
+    dest: '/etc/audit/rules.d/audit.rules'
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: Ensure auditd service is enabled and started
+  systemd:
+    name: auditd
+    state: started
+    enabled: yes
+
+- name: Install logrotate
+  apt:
+    name: logrotate
+    state: present
+
+- name: Create logrotate configuration
+  copy:
+    dest: /etc/logrotate.d/audit_logs
+    content: |
+      /var/log/audit/*.log {
+          weekly
+          missingok
+          rotate 7
+          compress
+          delaycompress
+          notifempty
+          create 0640 root root
+      }

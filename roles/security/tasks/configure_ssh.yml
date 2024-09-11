@@ -5,6 +5,11 @@
     state: present
     update_cache: yes
 
+- name: Enable firewall
+  ufw:
+    state: enabled
+    logging: on
+
 - name: Open ssh port
   ufw:
     rule: limit
@@ -30,8 +35,4 @@
   service:
     name: ssh
     state: restarted
-  changed_when: false
 
-- name: Enable firewall
-  ufw:
-    state: enabled
