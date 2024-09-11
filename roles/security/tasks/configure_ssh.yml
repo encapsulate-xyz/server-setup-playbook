@@ -1,0 +1,37 @@
+---
+- name: Install ufw
+  apt:
+    name: ufw
+    state: present
+    update_cache: yes
+
+- name: Open ssh port
+  ufw:
+    rule: limit
+    port: '{{ ssh_port }}'
+    proto: tcp
+
+- name: Disable root login over SSH
+  lineinfile:
+    dest: '/etc/ssh/sshd_config'
+    regexp: '^PermitRootLogin'
+    line: 'PermitRootLogin no'
+    state: present
+  when: disable_root|default(true)|bool == true
+
+- name: Disable password login
+  lineinfile:
+    dest: '/etc/ssh/sshd_config'
+    regexp: '^PasswordAuthentication'
+    line: 'PasswordAuthentication no'
+    state: present
+
+- name: Restart SSH
+  service:
+    name: ssh
+    state: restarted
+  changed_when: false
+
+- name: Enable firewall
+  ufw:
+    state: enabled
