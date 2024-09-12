@@ -1,4 +1,7 @@
 ---
+- name: Create users
+  import_tasks: create_users.yml
+
 - name: Install node exporter
   import_tasks: install_node_exporter.yml
 
