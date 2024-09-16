@@ -2,6 +2,13 @@
 disable_root: true
 ssh_port: 22
 
+#MSMTP
+mail_to: '' 
+mail_from: '' 
+mail_smtp_server: 'smtp.gmail.com' 
+mail_pw: ''
+mail_port: 587 
+
 # Node Exporter
 node_exporter_version: '1.8.2'
 

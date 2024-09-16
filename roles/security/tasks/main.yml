@@ -7,3 +7,6 @@
 
 - name: Configure auditd
   import_tasks: configure_auditd.yml
+
+- name: Configure msmtp
+  import_tasks: configure_msmtp.yml
