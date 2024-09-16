@@ -1,5 +1,5 @@
 ---
-- Name: Server Setup
+- name: Server Setup
   hosts: all
   gather_facts: no
   vars_files:
