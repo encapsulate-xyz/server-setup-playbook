@@ -8,7 +8,7 @@
 - name: unarchive node_exporter
   unarchive:
     src: '/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz'
-    remote_src: yes
+    remote_src: true
     dest: '/tmp'
 
 - name: copy node_exporter binary
@@ -21,7 +21,7 @@
     mode: '0755'
 
 - name: create node_exporter systemd unit
-  copy:
+  template:
     src: node_exporter.service.j2
     dest: /etc/systemd/system/node_exporter.service
     owner: root
