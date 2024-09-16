@@ -16,6 +16,16 @@
     port: '{{ ssh_port }}'
     proto: tcp
 
+- name: Allow traffic from Monitor Server to Node Exporter and Process Exporter
+  ufw:
+    rule: allow
+    from_ip: "{{ monitor_server_ip }}"
+    to_port: "{{ item.port }}"
+    proto: tcp
+  loop:
+    - { port: 9100 }
+    - { port: 9256 }
+
 - name: Disable root login over SSH
   lineinfile:
     dest: '/etc/ssh/sshd_config'
