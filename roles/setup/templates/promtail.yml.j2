@@ -14,23 +14,21 @@ scrape_configs:
       max_age: 12h
       labels:
         job: systemd-journal
-        host: {{ promtail_name }}
+        host: {{ ansible_hostname }}
     relabel_configs:
       - source_labels: ["__journal__systemd_unit"]
         target_label: "unit"
 
   - job_name: varlogs
     static_configs:
-      - targets:
-          - localhost
         labels:
           job: varlogs
+          host: {{ ansible_hostname }}
           __path__: /var/log/*.log
 
   - job_name: auditlogs
     static_configs:
-      - targets:
-          - localhost
         labels:
           job: auditlogs
+          host: {{ ansible_hostname }}
           __path__: /var/log/audit/*.log

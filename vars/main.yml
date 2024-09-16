@@ -8,7 +8,6 @@ node_exporter_version: '1.8.2'
 # Promtail
 promtail_version: '3.0.1'
 loki_instance_ip: 'http://<ip>:3100'
-promtail_name: '<name>'
 
 # Process Exporter
 process_exporter_version: '0.8.3'
