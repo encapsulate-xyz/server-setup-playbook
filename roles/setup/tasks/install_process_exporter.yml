@@ -1,28 +1,28 @@
 ---
-- name: download process_exporter
+- name: download process-exporter
   get_url:
     url: 'https://github.com/ncabatoff/process-exporter/releases/download/v{{ process_exporter_version }}/process-exporter-{{ process_exporter_version }}.linux-amd64.tar.gz'
-    dest: '/tmp/process_exporter-{{ process_exporter_version }}.linux-amd64.tar.gz'
+    dest: '/tmp/process-exporter-{{ process_exporter_version }}.linux-amd64.tar.gz'
     mode: '0700'
 
-- name: unarchive process_exporter
+- name: unarchive process-exporter
   unarchive:
-    src: '/tmp/process_exporter-{{ process_exporter_version }}.linux-amd64.tar.gz'
-    remote_src: yes
+    src: '/tmp/process-exporter-{{ process_exporter_version }}.linux-amd64.tar.gz'
+    remote_src: true
     dest: '/tmp'
 
-- name: copy process_exporter binary
+- name: copy process-exporter binary
   copy:
-    src: '/tmp/process_exporter-{{ process_exporter_version }}.linux-amd64/process_exporter'
+    src: '/tmp/process-exporter-{{ process_exporter_version }}.linux-amd64/process-exporter'
     dest: '/usr/local/bin/'
     remote_src: true
     owner: root
     group: root
     mode: '0755'
 
-- name: Creates process_exporter directory
+- name: creates process-exporter directory
   file:
-    path: '/etc/process_exporter'
+    path: '/etc/process-exporter'
     state: directory
     owner: root
     group: root
@@ -30,24 +30,25 @@
     mode: '0755'
   changed_when: false
 
-- name: Copy process_exporter config
-  template:
-    src: 'process_exporter.yml.j2'
-    dest: '/etc/process_exporter/process_exporter.yml'
+- name: copy process-exporter config
+  copy:
+    src: 'process-exporter.yml'
+    dest: '/etc/process-exporter/process-exporter.yml'
     owner: root
     group: root
+    mode: '0644'
 
-- name: create process_exporter systemd unit
-  copy:
-    src: process_exporter.service.j2
-    dest: /etc/systemd/system/process_exporter.service
+- name: create process-exporter systemd unit
+  template:
+    src: process-exporter.service.j2
+    dest: /etc/systemd/system/process-exporter.service
     owner: root
     group: root
     mode: '0600'
 
-- name: start process_exporter service
+- name: start process-exporter service
   systemd:
-    name: process_exporter
+    name: process-exporter
     state: restarted
     daemon_reload: yes
     enabled: yes

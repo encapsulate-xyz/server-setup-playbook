@@ -5,20 +5,18 @@ After=network.target
 [Service]
 Type=simple
 User=root
-ExecStart=/usr/local/bin/process_exporter -config.path /etc/process_exporter/process_exporter.yml
+ExecStart=/usr/local/bin/process-exporter -config.path /etc/process-exporter/process-exporter.yml
 
-SyslogIdentifier=process_exporter
+SyslogIdentifier=process-exporter
 Restart=always
-RestartSec=1
-StartLimitInterval=0
+RestartSec=4
+LimitNOFILE=4096
 NoNewPrivileges=yes
 
 ProtectSystem=strict
 ProtectControlGroups=true
 ProtectKernelModules=true
 ProtectKernelTunables=yes
-
-Restart=always
 
 [Install]
 WantedBy=multi-user.target
