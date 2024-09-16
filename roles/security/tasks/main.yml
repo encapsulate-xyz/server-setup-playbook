@@ -13,3 +13,6 @@
 
 - name: Configure rkhunter
   import_tasks: configure_rkhunter.yml
+
+- name: Configure psad
+  import_tasks: configure_psad.yml

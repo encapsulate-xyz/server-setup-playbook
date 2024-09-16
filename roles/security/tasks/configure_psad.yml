@@ -1,0 +1,70 @@
+---
+- name: install packages
+  become: true
+  apt:
+    name: 
+      - psad
+    state: present
+
+- name: configure psad
+  become: true
+  lineinfile:
+    dest: /etc/psad/psad.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^EMAIL_ADDRESSES', line: 'EMAIL_ADDRESSES {{ mail_to }};' }
+    - { regexp: '^EXPECT_TCP_OPTIONS', line: 'EXPECT_TCP_OPTIONS Y;'}
+    - { regexp: '^ENABLE_PSADWATCHD', line: 'ENABLE_PSADWATCHD Y;'}
+    - { regexp: '^ENABLE_AUTO_IDS ', line: 'ENABLE_AUTO_IDS Y;'}
+    - { regexp: '^ENABLE_AUTO_IDS_EMAILS', line: 'ENABLE_AUTO_IDS_EMAILS Y;'}
+    - { regexp: '^EMAIL_ALERT_DANGER_LEVEL', line: 'EMAIL_ALERT_DANGER_LEVEL 4;'}
+    - { regexp: '^AUTO_IDS_DANGER_LEVEL', line: 'AUTO_IDS_DANGER_LEVEL 3;'}
+    - { regexp: '^AUTO_BLOCK_TIMEOUT', line: 'AUTO_BLOCK_TIMEOUT 0;'}
+    - { regexp: '^HOSTNAME', line: 'HOSTNAME {{ ansible_hostname }};'}
+
+- name: restart psad service
+  become: true
+  service: 
+    name: psad
+    state: restarted
+  changed_when: false
+
+- name: add logging to ufw before.rules
+  become: true
+  blockinfile:
+    dest: /etc/ufw/before.rules
+    insertbefore: "COMMIT"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      # log all traffic so psad can analyze
+      -A INPUT -j LOG --log-tcp-options --log-prefix "[IPTABLES] "
+      -A FORWARD -j LOG --log-tcp-options --log-prefix "[IPTABLES] "
+- name: restart ufw service
+  become: true
+  service: 
+    name: ufw
+    state: restarted
+  changed_when: false
+
+- name: add logging to ufw before6.rules
+  become: true
+  blockinfile:
+    dest: /etc/ufw/before6.rules
+    insertbefore: "COMMIT"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      # log all traffic so psad can analyze
+      -A INPUT -j LOG --log-tcp-options --log-prefix "[IPTABLES] "
+      -A FORWARD -j LOG --log-tcp-options --log-prefix "[IPTABLES] "
+- name: restart ufw service
+  become: true
+  service: 
+    name: ufw
+    state: restarted
+  changed_when: false
+
+- name: update psad signatures
+  become: true
+  shell: |
+    psad --sig-update
