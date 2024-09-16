@@ -3,7 +3,7 @@ server:
   grpc_listen_port: 0
 
 positions:
-  filename: /tmp/positions.yaml
+  filename: /etc/promtail/positions.yml
 
 clients:
   - url: http://{{ loki_instance_ip }}/loki/api/v1/push
