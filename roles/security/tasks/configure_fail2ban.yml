@@ -17,6 +17,8 @@
       filter = sshd
       logpath = /var/log/auth.log
       maxretry = 5
+      findtime = 60
+      bantime  = -1      
     create: true
 
 - name: Restart fail2ban
