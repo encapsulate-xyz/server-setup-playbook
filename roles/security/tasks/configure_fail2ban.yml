@@ -17,7 +17,7 @@
       filter = sshd
       logpath = /var/log/auth.log
       maxretry = 5
-      findtime = 60
+      findtime = 86400
       bantime  = -1      
     create: true
 
