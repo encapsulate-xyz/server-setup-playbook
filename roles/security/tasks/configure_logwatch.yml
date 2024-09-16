@@ -1,0 +1,15 @@
+---
+- name: install packages
+  become: true
+  apt:
+    name: 
+      - logwatch
+    state: present
+
+- name: Update logwatch cron job to send reports
+  become: true
+  replace:
+    path: /etc/cron.daily/00logwatch
+    regexp: '^/usr/sbin/logwatch --format html --mailto root'
+    replace: '/usr/sbin/logwatch --output mail --format html --mailto {{ mail_to }} --range yesterday --service all'
+    
