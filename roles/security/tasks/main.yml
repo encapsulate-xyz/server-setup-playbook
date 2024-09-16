@@ -10,3 +10,6 @@
 
 - name: Configure msmtp
   import_tasks: configure_msmtp.yml
+
+- name: Configure rkhunter
+  import_tasks: configure_rkhunter.yml
