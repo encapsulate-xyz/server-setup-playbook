@@ -1,6 +1,9 @@
 ---
-- hosts: all
+- Name: Server Setup
+  hosts: all
   gather_facts: no
+  vars_files:
+    - vars/main.yml
   become: true
   roles:
     - setup
