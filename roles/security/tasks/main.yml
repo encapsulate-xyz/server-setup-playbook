@@ -22,4 +22,7 @@
 
 - name: Configure lynis
   import_tasks: configure_lynis.yml
+
+- name: Configure clamav
+  import_tasks: configure_clamav.yml
   
