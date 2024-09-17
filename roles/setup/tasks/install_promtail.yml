@@ -4,6 +4,7 @@
     name: promtail
     comment: 'Promtail user'
     shell: /usr/sbin/nologin
+    create_home: false
     groups: ['systemd-journal', 'adm']
     state: present
 
