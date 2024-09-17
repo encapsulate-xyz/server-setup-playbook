@@ -25,4 +25,6 @@
 
 - name: Configure clamav
   import_tasks: configure_clamav.yml
-  
+
+- name: Configure aide
+  import_tasks: configure_aide.yml
