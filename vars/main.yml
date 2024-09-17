@@ -2,6 +2,11 @@
 disable_root: true
 ssh_port: 22
 
+#swap
+swap_size_gb: 32
+swap_file_path: /swapfile
+swappiness_value: 10
+
 #MSMTP
 mail_to: '' 
 mail_from: '' 

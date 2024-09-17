@@ -10,3 +10,7 @@
   
 - name: Install process exporter
   import_tasks: install_process_exporter.yml
+
+- name: Configure SWAP
+  import_tasks: configure_swap.yml
+  
