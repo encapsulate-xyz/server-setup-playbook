@@ -45,4 +45,4 @@
   service:
     name: ssh
     state: restarted
-
+  changed_when: false

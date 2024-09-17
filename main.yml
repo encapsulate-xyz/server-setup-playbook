@@ -1,7 +1,7 @@
 ---
 - name: Server Setup
   hosts: all
-  gather_facts: no
+  gather_facts: false
   vars_files:
     - vars/main.yml
   become: true

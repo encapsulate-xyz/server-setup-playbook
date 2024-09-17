@@ -25,3 +25,4 @@
   service:
     name: fail2ban
     state: restarted
+  changed_when: false

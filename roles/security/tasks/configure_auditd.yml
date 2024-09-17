@@ -3,6 +3,7 @@
     name:
       - auditd
       - audispd-plugins
+      - logrotate
     state: present
 
 - name: Remove default auditd rules
@@ -23,11 +24,7 @@
     name: auditd
     state: started
     enabled: yes
-
-- name: Install logrotate
-  apt:
-    name: logrotate
-    state: present
+  changed_when: false
 
 - name: Create logrotate configuration
   copy:

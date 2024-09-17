@@ -6,9 +6,12 @@
       - rkhunter
     state: present
 
-- name: copy rkhunter's default config file
+- name: Copy rkhunter's default config file
   become: true
-  shell: cp -p /etc/rkhunter.conf /etc/rkhunter.conf.local
+  copy:
+    src: /etc/rkhunter.conf
+    dest: /etc/rkhunter.conf.local
+    remote_src: yes
 
 - name: configure rkhunter
   become: true
