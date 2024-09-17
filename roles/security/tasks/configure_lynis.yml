@@ -29,5 +29,5 @@
   shell: |
     lynis update info
     lynis audit system | ansi2html -l > /tmp/lynis-report.html 
-    echo "First Lynis report see attachment" | mail -A /tmp/lynis-report.html -s "Lynis report" {{ mail_to }}
+    echo "First Lynis report see attachment" | mail -A /tmp/lynis-report.html -s "Lynis report - $(hostname)" {{ mail_to }}
   changed_when: false
