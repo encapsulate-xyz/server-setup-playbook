@@ -14,9 +14,6 @@ mail_smtp_server: 'smtp.gmail.com'
 # mail_pw: ''   Moved to ansible vault
 mail_port: 587 
 
-#PSAD
-ansible_hostname: babylon-testnet
-
 # Node Exporter
 node_exporter_version: '1.8.2'
 

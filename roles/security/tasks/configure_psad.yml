@@ -13,9 +13,10 @@
   loop:
     - { regexp: '^EMAIL_ADDRESSES', line: 'EMAIL_ADDRESSES {{ mail_to }};' }
     - { regexp: '^EXPECT_TCP_OPTIONS', line: 'EXPECT_TCP_OPTIONS Y;'}
-    - { regexp: '^ENABLE_PSADWATCHD', line: 'ENABLE_PSADWATCHD Y;'}
+    - { regexp: '^ENABLE_PSADWATCHD', line: 'ENABLE_PSADWATCHD N;'}
     - { regexp: '^ENABLE_AUTO_IDS ', line: 'ENABLE_AUTO_IDS Y;'}
     - { regexp: '^ENABLE_AUTO_IDS_EMAILS', line: 'ENABLE_AUTO_IDS_EMAILS Y;'}
+    - { regexp: '^MIN_DANGER_LEVEL', line: 'MIN_DANGER_LEVEL 3;'}
     - { regexp: '^EMAIL_ALERT_DANGER_LEVEL', line: 'EMAIL_ALERT_DANGER_LEVEL 4;'}
     - { regexp: '^AUTO_IDS_DANGER_LEVEL', line: 'AUTO_IDS_DANGER_LEVEL 3;'}
     - { regexp: '^AUTO_BLOCK_TIMEOUT', line: 'AUTO_BLOCK_TIMEOUT 0;'}

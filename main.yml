@@ -1,7 +1,7 @@
 ---
 - name: Server Setup
   hosts: '{{ target }}'
-  gather_facts: false
+  gather_facts: true
   vars_files:
     - vars/main.yml
     - secrets.yml
