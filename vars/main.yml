@@ -11,7 +11,7 @@ swappiness_value: 10
 mail_to: '' 
 mail_from: '' 
 mail_smtp_server: 'smtp.gmail.com' 
-mail_pw: ''
+# mail_pw: ''   Moved to ansible vault
 mail_port: 587 
 
 #PSAD
