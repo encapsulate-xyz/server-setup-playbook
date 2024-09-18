@@ -1,28 +1,27 @@
 ---
-- name: Check if swap file exists
-  stat:
-    path: "{{ swap_file_path }}"
-  register: swap_file
-
-- name: Check current swap size
-  shell: free -g | awk '/^Swap:/ {print $2}'
-  register: current_swap_size
+- name: Get swap file path from /etc/fstab
+  shell: grep swap /etc/fstab | awk '{print $1}'
+  register: current_swap_file_path_result
   changed_when: false
+
+- name: Set the current swap file path variable
+  set_fact:
+    current_swap_file_path: "{{ current_swap_file_path_result.stdout.strip() }}"
+  when: current_swap_file_path_result.stdout.strip() != ''
 
 - name: Disable swap if it exists
   command: swapoff -a
-  when: swap_file.stat.exists
+  when: current_swap_file_path is defined
   ignore_errors: true
 
 - name: Remove existing swap file
   file:
-    path: "{{ swap_file_path }}"
+    path: "{{ current_swap_file_path }}"
     state: absent
-  when: swap_file.stat.exists and current_swap_size.stdout | int != swap_size_gb
+  when: current_swap_file_path is defined
 
 - name: Create swap file 
-  command: fallocate -l {{ swap_size_gb }}G /swapfile
-  when: not swap_file.stat.exists or current_swap_size.stdout | int != swap_size_gb
+  command: fallocate -l {{ swap_size_gb }}G {{ swap_file_path }}
 
 - name: Set swap file permissions
   file:
@@ -33,11 +32,9 @@
 
 - name: Make swap
   command: mkswap {{ swap_file_path }}
-  when: not swap_file.stat.exists or current_swap_size.stdout | int != swap_size_gb
 
 - name: Enable swap
   command: swapon {{ swap_file_path }}
-  when: not swap_file.stat.exists or current_swap_size.stdout | int != swap_size_gb
 
 - name: Add swap to fstab
   lineinfile:
