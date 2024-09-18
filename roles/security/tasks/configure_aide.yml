@@ -8,4 +8,4 @@
 
 - name: Update aide
   shell: |
-    sudo aideinit
+    aideinit
