@@ -1,5 +1,5 @@
 ---
-- name: install packages
+- name: Install packages
   apt:
     name: 
       - rkhunter
@@ -11,7 +11,7 @@
     dest: /etc/rkhunter.conf.local
     remote_src: yes
 
-- name: configure rkhunter
+- name:  Configure rkhunter general settings
   lineinfile:
     dest: /etc/rkhunter.conf.local
     regexp: "{{ item.regexp }}"
@@ -26,7 +26,7 @@
     - { regexp: '^USE_LOCKING', line: 'USE_LOCKING=1'}
     - { regexp: '^SHOW_SUMMARY_WARNINGS_NUMBER', line: 'SHOW_SUMMARY_WARNINGS_NUMBER=1'}
 
-- name: configure rkhunter pt. 2
+- name: Configure rkhunter cron job settings
   lineinfile:
     dest: /etc/default/rkhunter
     regexp: "{{ item.regexp }}"
@@ -40,7 +40,7 @@
     - { regexp: '^NICE', line: 'NICE="0"' }
     - { regexp: '^RUN_CHECK_ON_BATTERY', line: 'RUN_CHECK_ON_BATTERY="false"' }
 
-- name: update rkhunter
+- name: Update rkhunter
   shell: |
     rkhunter --update
     rkhunter --propupd

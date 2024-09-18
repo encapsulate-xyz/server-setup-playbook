@@ -1,5 +1,5 @@
 ---
-- name: install packages
+- name: Install packages
   apt:
     name: 
       - clamav
@@ -7,13 +7,13 @@
       - clamav-daemon
     state: present
 
-- name: set cron MAILTO
+- name: Set cron MAILTO
   cronvar:
     user: root
     name: MAILTO
     value: "{{ mail_to }}"
 
-- name: add crontab to run clamav daily at 3 AM
+- name: Add crontab to run clamav daily at 3 AM
   cron:
     name: clamav daily run
     minute: "0"

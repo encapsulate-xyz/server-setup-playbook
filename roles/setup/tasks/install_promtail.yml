@@ -1,5 +1,5 @@
 ---
-- name: create Promtail user
+- name: Create Promtail user
   user:
     name: promtail
     comment: 'Promtail user'
@@ -8,7 +8,7 @@
     groups: ['systemd-journal', 'adm']
     state: present
 
-- name: creates Promtail directory
+- name: Create Promtail directory
   file:
     path: '/etc/promtail'
     state: directory
@@ -18,24 +18,24 @@
     mode: '0755'
   changed_when: false
 
-- name: install unzip
+- name: Install unzip
   apt:
     name: unzip
     state: present
 
-- name: download promtail
+- name: Download promtail
   get_url:
     url: 'https://github.com/grafana/loki/releases/download/v{{ promtail_version }}/promtail-linux-amd64.zip'
     dest: '/tmp/promtail-linux-amd64.zip'
     mode: '0700'
 
-- name: unarchive promtail
+- name: Unarchive promtail
   unarchive:
     src: '/tmp/promtail-linux-amd64.zip'
     remote_src: true
     dest: '/tmp'
 
-- name: copy binary file
+- name: Copy binary file
   copy:
     src: '/tmp/promtail-linux-amd64'
     dest: '/usr/local/bin/promtail'
@@ -44,7 +44,7 @@
     group: promtail
     mode: '0755'
 
-- name: copy promtail config
+- name: Copy promtail config
   template:
     src: 'promtail.yml.j2'
     dest: '/etc/promtail/promtail.yml'
@@ -52,7 +52,7 @@
     group: promtail
     mode: '0644'
 
-- name: copy promtail service file
+- name: Copy promtail service file
   template:
     src: 'promtail.service.j2'
     dest: '/etc/systemd/system/promtail.service'
@@ -60,7 +60,7 @@
     group: root
     mode: '0600'
 
-- name: start promtail service
+- name: Start promtail service
   systemd:
     name: promtail
     state: started

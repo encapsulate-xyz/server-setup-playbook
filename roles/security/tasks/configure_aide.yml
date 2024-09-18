@@ -1,11 +1,11 @@
 --- 
-- name: install packages
+- name: Install packages
   apt:
     name: 
       - aide
       - aide-common
     state: present
 
-- name: update aide
+- name: Update aide
   shell: |
     sudo aideinit

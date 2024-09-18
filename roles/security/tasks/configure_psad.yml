@@ -1,11 +1,11 @@
 ---
-- name: install packages
+- name: Install packages
   apt:
     name: 
       - psad
     state: present
 
-- name: configure psad
+- name: Configure psad
   lineinfile:
     dest: /etc/psad/psad.conf
     regexp: "{{ item.regexp }}"
@@ -21,13 +21,13 @@
     - { regexp: '^AUTO_BLOCK_TIMEOUT', line: 'AUTO_BLOCK_TIMEOUT 0;'}
     - { regexp: '^HOSTNAME', line: 'HOSTNAME {{ ansible_hostname }};'}
 
-- name: restart psad service
+- name: Restart psad service
   service: 
     name: psad
     state: restarted
   changed_when: false
 
-- name: add logging to ufw before.rules
+- name: Add logging to ufw before.rules
   blockinfile:
     dest: /etc/ufw/before.rules
     insertbefore: "COMMIT"
@@ -37,13 +37,13 @@
       -A INPUT -j LOG --log-tcp-options --log-prefix "[IPTABLES] "
       -A FORWARD -j LOG --log-tcp-options --log-prefix "[IPTABLES] "
       
-- name: restart ufw service
+- name: Restart ufw service
   service: 
     name: ufw
     state: restarted
   changed_when: false
 
-- name: add logging to ufw before6.rules
+- name: Add logging to ufw before6.rules
   blockinfile:
     dest: /etc/ufw/before6.rules
     insertbefore: "COMMIT"
@@ -53,12 +53,12 @@
       -A INPUT -j LOG --log-tcp-options --log-prefix "[IPTABLES] "
       -A FORWARD -j LOG --log-tcp-options --log-prefix "[IPTABLES] "
 
-- name: restart ufw service
+- name: Restart ufw service
   service: 
     name: ufw
     state: restarted
   changed_when: false
 
-- name: update psad signatures
+- name: Update psad signatures
   shell: |
     psad --sig-update

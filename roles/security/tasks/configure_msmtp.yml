@@ -1,5 +1,5 @@
 ---
-- name: install packages
+- name: Install packages
   apt:
     name: 
       - msmtp
@@ -8,7 +8,7 @@
       - postfix
     state: present
 
-- name: configure mail settings
+- name: Configure msmtp mail settings
   blockinfile:
     path: /etc/msmtprc
     block: |
@@ -28,13 +28,13 @@
       logfile /var/log/msmtp
     create: true
 
-- name: chmod mail config file
+- name: Set chmod for mail config file
   file:
     path: /etc/msmtprc
     group: msmtp
     mode: '640'
 
-- name: configure mail settings pt. 2
+- name: Configure email alias forwarding
   lineinfile:
     dest: /etc/aliases
     regexp: "{{ item.regexp }}"
@@ -44,7 +44,7 @@
     - { regexp: '^root:', line: 'root: {{ mail_to }}' }
     - { regexp: '^default:', line: 'default: {{ mail_to }}' }
 
-- name: configure mail settings pt. 3
+- name: set msmtp as default mail handler
   lineinfile:
     path: /etc/mail.rc
     regexp: '^set sendmail'
@@ -53,4 +53,3 @@
 
 - name: send a testmail
   shell: echo "Testmail content" | mail -s "Testmail subject" {{ mail_to }}
-  
