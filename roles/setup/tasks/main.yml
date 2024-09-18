@@ -1,16 +1,21 @@
 ---
 - name: Create users
   import_tasks: create_users.yml
+  when: user|default(true)|bool == true
 
 - name: Install node exporter
   import_tasks: install_node_exporter.yml
+  when: node_exporter|default(true)|bool == true
 
 - name: Install promtail
   import_tasks: install_promtail.yml
+  when: promtail|default(true)|bool == true
   
 - name: Install process exporter
   import_tasks: install_process_exporter.yml
+  when: process_exporter|default(true)|bool == true
 
 - name: Configure SWAP
   import_tasks: configure_swap.yml
+  when: swap|default(true)|bool == true
   
