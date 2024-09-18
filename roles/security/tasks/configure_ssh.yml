@@ -15,16 +15,23 @@
     rule: limit
     port: '{{ ssh_port }}'
     proto: tcp
+    comment: 'Allow SSH'
 
-- name: Allow traffic from Monitor Server to Node Exporter and Process Exporter
+- name: Allow traffic from Monitor Server to Node Exporter 
   ufw:
     rule: allow
     from_ip: "{{ monitor_server_ip }}"
-    to_port: "{{ item.port }}"
+    to_port: 9100
     proto: tcp
-  loop:
-    - { port: 9100 }
-    - { port: 9256 }
+    comment: 'Allow traffic from Monitor Server to Node Exporter'
+
+- name: Allow traffic from Monitor Server to Process Exporter
+  ufw:
+    rule: allow
+    from_ip: "{{ monitor_server_ip }}"
+    to_port: 9256
+    proto: tcp
+    comment: 'Allow traffic from Monitor Server to Process Exporter'
 
 - name: Disable root login over SSH
   lineinfile:
