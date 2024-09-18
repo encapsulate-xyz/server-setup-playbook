@@ -38,12 +38,6 @@
       -A INPUT -j LOG --log-tcp-options --log-prefix "[IPTABLES] "
       -A FORWARD -j LOG --log-tcp-options --log-prefix "[IPTABLES] "
       
-- name: Restart ufw service
-  service: 
-    name: ufw
-    state: restarted
-  changed_when: false
-
 - name: Add logging to ufw before6.rules
   blockinfile:
     dest: /etc/ufw/before6.rules

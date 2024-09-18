@@ -22,7 +22,7 @@
 - name: Ensure auditd service is enabled and started
   systemd:
     name: auditd
-    state: started
+    state: restarted
     enabled: yes
   changed_when: false
 
