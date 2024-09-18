@@ -19,14 +19,23 @@ scrape_configs:
       - source_labels: ["__journal__systemd_unit"]
         target_label: "unit"
 
-  - job_name: varlogs
+  - job_name: authlogs
     static_configs:
       - targets:
         - localhost
         labels:
-          job: varlogs
+          job: authlogs
           host: {{ ansible_hostname }}
-          __path__: /var/log/*.log
+          __path__: /var/log/auth.log
+
+  - job_name: fail2banlogs
+    static_configs:
+      - targets:
+        - localhost
+        labels:
+          job: fail2banlogs
+          host: {{ ansible_hostname }}
+          __path__: /var/log/fail2ban.log
 
   - job_name: auditlogs
     static_configs:
@@ -36,3 +45,12 @@ scrape_configs:
           job: auditlogs
           host: {{ ansible_hostname }}
           __path__: /var/log/audit/*.log
+
+  - job_name: syslogs
+    static_configs:
+      - targets:
+        - localhost
+        labels:
+          job: syslogs
+          host: {{ ansible_hostname }}
+          __path__: /var/log/syslog
