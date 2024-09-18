@@ -1,6 +1,5 @@
 ---
 - name: install packages
-  become: true
   apt:
     name: 
       - msmtp
@@ -10,7 +9,6 @@
     state: present
 
 - name: configure mail settings
-  become: true
   blockinfile:
     path: /etc/msmtprc
     block: |
@@ -31,14 +29,12 @@
     create: true
 
 - name: chmod mail config file
-  become: true
   file:
     path: /etc/msmtprc
     group: msmtp
     mode: '640'
 
 - name: configure mail settings pt. 2
-  become: true
   lineinfile:
     dest: /etc/aliases
     regexp: "{{ item.regexp }}"
@@ -49,7 +45,6 @@
     - { regexp: '^default:', line: 'default: {{ mail_to }}' }
 
 - name: configure mail settings pt. 3
-  become: true
   lineinfile:
     path: /etc/mail.rc
     regexp: '^set sendmail'
@@ -57,6 +52,5 @@
     create: yes
 
 - name: send a testmail
-  become: true
   shell: echo "Testmail content" | mail -s "Testmail subject" {{ mail_to }}
   

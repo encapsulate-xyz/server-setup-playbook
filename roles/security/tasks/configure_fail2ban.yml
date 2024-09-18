@@ -6,7 +6,6 @@
     update_cache: yes
 
 - name: Configure ssh jail 
-  become: true
   blockinfile:
     path: /etc/fail2ban/jail.d/ssh.local
     block: |

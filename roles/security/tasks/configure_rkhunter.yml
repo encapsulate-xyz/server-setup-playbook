@@ -1,20 +1,17 @@
 ---
 - name: install packages
-  become: true
   apt:
     name: 
       - rkhunter
     state: present
 
 - name: Copy rkhunter's default config file
-  become: true
   copy:
     src: /etc/rkhunter.conf
     dest: /etc/rkhunter.conf.local
     remote_src: yes
 
 - name: configure rkhunter
-  become: true
   lineinfile:
     dest: /etc/rkhunter.conf.local
     regexp: "{{ item.regexp }}"
@@ -30,7 +27,6 @@
     - { regexp: '^SHOW_SUMMARY_WARNINGS_NUMBER', line: 'SHOW_SUMMARY_WARNINGS_NUMBER=1'}
 
 - name: configure rkhunter pt. 2
-  become: true
   lineinfile:
     dest: /etc/default/rkhunter
     regexp: "{{ item.regexp }}"
@@ -45,7 +41,6 @@
     - { regexp: '^RUN_CHECK_ON_BATTERY', line: 'RUN_CHECK_ON_BATTERY="false"' }
 
 - name: update rkhunter
-  become: true
   shell: |
     rkhunter --update
     rkhunter --propupd

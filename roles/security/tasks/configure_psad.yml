@@ -1,13 +1,11 @@
 ---
 - name: install packages
-  become: true
   apt:
     name: 
       - psad
     state: present
 
 - name: configure psad
-  become: true
   lineinfile:
     dest: /etc/psad/psad.conf
     regexp: "{{ item.regexp }}"
@@ -24,14 +22,12 @@
     - { regexp: '^HOSTNAME', line: 'HOSTNAME {{ ansible_hostname }};'}
 
 - name: restart psad service
-  become: true
   service: 
     name: psad
     state: restarted
   changed_when: false
 
 - name: add logging to ufw before.rules
-  become: true
   blockinfile:
     dest: /etc/ufw/before.rules
     insertbefore: "COMMIT"
@@ -42,14 +38,12 @@
       -A FORWARD -j LOG --log-tcp-options --log-prefix "[IPTABLES] "
       
 - name: restart ufw service
-  become: true
   service: 
     name: ufw
     state: restarted
   changed_when: false
 
 - name: add logging to ufw before6.rules
-  become: true
   blockinfile:
     dest: /etc/ufw/before6.rules
     insertbefore: "COMMIT"
@@ -60,13 +54,11 @@
       -A FORWARD -j LOG --log-tcp-options --log-prefix "[IPTABLES] "
 
 - name: restart ufw service
-  become: true
   service: 
     name: ufw
     state: restarted
   changed_when: false
 
 - name: update psad signatures
-  become: true
   shell: |
     psad --sig-update

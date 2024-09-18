@@ -1,6 +1,5 @@
 ---
 - name: install packages
-  become: true
   apt:
     name: 
       - clamav
@@ -9,14 +8,12 @@
     state: present
 
 - name: set cron MAILTO
-  become: true
   cronvar:
     user: root
     name: MAILTO
     value: "{{ mail_to }}"
 
 - name: add crontab to run clamav daily at 3 AM
-  become: true
   cron:
     name: clamav daily run
     minute: "0"

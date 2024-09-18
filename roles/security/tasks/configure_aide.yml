@@ -1,6 +1,5 @@
 --- 
 - name: install packages
-  become: true
   apt:
     name: 
       - aide
@@ -8,6 +7,5 @@
     state: present
 
 - name: update aide
-  become: true
   shell: |
     sudo aideinit
