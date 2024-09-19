@@ -21,7 +21,7 @@
 
 - name: Configure psad
   import_tasks: configure_psad.yml
-  when: psad|default(true)|bool == true
+  when: psad|default(false)|bool == true
 
 - name: Configure logwatch
   import_tasks: configure_logwatch.yml
