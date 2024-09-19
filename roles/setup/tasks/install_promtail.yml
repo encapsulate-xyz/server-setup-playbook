@@ -16,7 +16,6 @@
     group: promtail
     recurse: true
     mode: '0755'
-  changed_when: false
 
 - name: Install unzip
   apt:
