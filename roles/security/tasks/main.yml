@@ -37,4 +37,4 @@
 
 - name: Configure aide
   import_tasks: configure_aide.yml
-  when: aide|default(true)|bool == true
+  when: aide|default(false)|bool == true
