@@ -6,6 +6,14 @@
     - vars/main.yml
     - secrets.yml
   become: true
+  pre_tasks:
+    - name: Resolve IP address from DNS using getent
+      command: "getent ahosts {{ monitor_server_dns }}"
+      register: dns_result
+
+    - name: Extract IP address
+      set_fact:
+        monitor_server_ip: "{{ dns_result.stdout.split()[0] }}"  
   roles:
     - setup
     - security
