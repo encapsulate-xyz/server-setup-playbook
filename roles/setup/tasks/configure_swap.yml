@@ -1,61 +1,125 @@
 ---
-- name: Get swap file path from /etc/fstab
-  shell: grep swap /etc/fstab | awk '{print $1}'
-  register: current_swap_file_path_result
-  changed_when: false
+# ====================================================================
+# Group 1: Check if Swap is Configured
+# ====================================================================
+- name: Check if swap is configured
+  command: swapon --show
+  register: current_swap_output
+  ignore_errors: yes
 
-- name: Set the current swap file path variable
+- name: Skip to configuration if no swap is configured
+  debug:
+    msg: "No swap is currently configured, proceeding to configure swap."
+  when: current_swap_output.stdout == ""
+  ignore_errors: yes
+
+# ====================================================================
+# Group 2: If Swap is Configured, Check the Size and Type
+# ====================================================================
+- name: Extract swap details from swapon --show
+  shell: "swapon --show --noheadings | awk '{print $1, $2, $3}'"
+  register: swap_details
+  when: current_swap_output.stdout != ""
+
+- name: Extract swap size in GB and type (file or partition)
   set_fact:
-    current_swap_file_path: "{{ current_swap_file_path_result.stdout.strip() }}"
-  when: current_swap_file_path_result.stdout.strip() != ''
+    current_swap_size: "{{ swap_details.stdout.split()[2] }}"
+    current_swap_type: "{{ swap_details.stdout.split()[1] }}"
+    current_swap_path: "{{ swap_details.stdout.split()[0] }}"
+  when: current_swap_output.stdout != ""
 
-- name: Disable swap if it exists
-  command: swapoff -a
-  when: current_swap_file_path is defined
+- name: Skip the rest of the playbook if swap size is 32GB
+  meta: end_play
+  when: current_swap_output.stdout != "" and current_swap_size == '32G'
   ignore_errors: true
 
-- name: Remove existing swap file
-  file:
-    path: "{{ current_swap_file_path }}"
-    state: absent
-  when: current_swap_file_path is defined
+# ====================================================================
+# Group 3: Remove Existing Swap if Size is Not 32GB and Type is File
+# ====================================================================
+- name: Remove existing swap file if type is file and size is not 32GB
+  block:
+    - name: Disable swap if active
+      command: swapoff {{ current_swap_path }}
+      when: current_swap_output.stdout != "" and current_swap_size != '32G'
 
-- name: Create swap file 
-  command: fallocate -l {{ swap_size_gb }}G {{ swap_file_path }}
+    - name: Remove swap entry from /etc/fstab
+      replace:
+        path: /etc/fstab
+        regexp: '^(.*\s+swap\s+.*)$'
+        replace: '# \1'
+      notify: update-initramfs
+      when: current_swap_output.stdout != "" and current_swap_size != '32G'
 
-- name: Set swap file permissions
-  file:
-    path: "{{ swap_file_path }}"
-    owner: root
-    group: root
-    mode: '0600'
+    - name: Remove swap file if it is a file
+      file:
+        path: "{{ current_swap_path }}"
+        state: absent
+      when: current_swap_output.stdout != "" and current_swap_type == 'file'
 
-- name: Make swap
-  command: mkswap {{ swap_file_path }}
+# ====================================================================
+# Group 4: Configure New 32GB Swap
+# ====================================================================
+- name: Configure new 32GB swap
+  block:
+    - name: Create a new 32GB swap file
+      command: fallocate -l {{ swap_size_gb }}G {{ swap_file_path }}
 
-- name: Enable swap
-  command: swapon {{ swap_file_path }}
+    - name: Set permissions on the swap file
+      file:
+        path: "{{ swap_file_path }}"
+        owner: root
+        group: root
+        mode: '0600'
 
-- name: Add swap to fstab
-  lineinfile:
-    path: /etc/fstab
-    line: "{{ swap_file_path }} none swap sw 0 0"
-    state: present
+    - name: Format the new swap file
+      command: mkswap {{ swap_file_path }}
 
-- name: Get current swappiness value
-  command: cat /proc/sys/vm/swappiness
-  register: current_swappiness
-  changed_when: false
+    - name: Enable the new swap file
+      command: swapon {{ swap_file_path }}
 
-- name: Set swappiness
-  sysctl:
-    name: vm.swappiness
-    value: "{{ swappiness_value }}"
-    state: present
-  when: current_swappiness.stdout | int != swappiness_value
+    - name: Add the new swap file entry to /etc/fstab
+      lineinfile:
+        path: /etc/fstab
+        line: "{{ swap_file_path }} none swap sw 0 0"
+        state: present
 
-- name: Ensure swappiness in sysctl.conf
-  lineinfile:
-    path: /etc/sysctl.conf
-    line: "vm.swappiness={{ swappiness_value }}"
-    state: present
+# ====================================================================
+# Group 5: Manage Swappiness Settings
+# ====================================================================
+- name: Manage system swappiness settings
+  block:
+    - name: Get current swappiness value
+      command: cat /proc/sys/vm/swappiness
+      register: current_swappiness
+      changed_when: false
+
+    - name: Set desired swappiness value
+      sysctl:
+        name: vm.swappiness
+        value: "{{ swappiness_value }}"
+        state: present
+      when: current_swappiness.stdout | int != swappiness_value
+
+    - name: Ensure swappiness is configured in sysctl.conf
+      lineinfile:
+        path: /etc/sysctl.conf
+        line: "vm.swappiness={{ swappiness_value }}"
+        state: present
+
+# ====================================================================
+# Group 6: Verify Swap Configuration
+# ====================================================================
+- name: Verify swap configuration
+  block:
+    - name: Verify the new swap is active
+      command: swapon --show
+      register: swap_status
+
+    - name: Show swap status
+      debug:
+        msg: "{{ swap_status.stdout }}"
+
+  handlers:
+    - name: update-initramfs
+      command: update-initramfs -u
+      when: ansible_distribution == "Ubuntu"
