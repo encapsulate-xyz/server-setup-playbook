@@ -1,0 +1,59 @@
+---
+- name: Install packages
+  apt:
+    name: 
+      - psad
+    state: present
+
+- name: Configure psad
+  lineinfile:
+    dest: /etc/psad/psad.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^EMAIL_ADDRESSES', line: 'EMAIL_ADDRESSES {{ mail_to }};' }
+    - { regexp: '^EXPECT_TCP_OPTIONS', line: 'EXPECT_TCP_OPTIONS Y;'}
+    - { regexp: '^ENABLE_PSADWATCHD', line: 'ENABLE_PSADWATCHD N;'}
+    - { regexp: '^ENABLE_AUTO_IDS ', line: 'ENABLE_AUTO_IDS Y;'}
+    - { regexp: '^ENABLE_AUTO_IDS_EMAILS', line: 'ENABLE_AUTO_IDS_EMAILS Y;'}
+    - { regexp: '^MIN_DANGER_LEVEL', line: 'MIN_DANGER_LEVEL 3;'}
+    - { regexp: '^EMAIL_ALERT_DANGER_LEVEL', line: 'EMAIL_ALERT_DANGER_LEVEL 4;'}
+    - { regexp: '^AUTO_IDS_DANGER_LEVEL', line: 'AUTO_IDS_DANGER_LEVEL 3;'}
+    - { regexp: '^AUTO_BLOCK_TIMEOUT', line: 'AUTO_BLOCK_TIMEOUT 0;'}
+    - { regexp: '^HOSTNAME', line: 'HOSTNAME {{ ansible_hostname }};'}
+
+- name: Restart psad service
+  service: 
+    name: psad
+    state: restarted
+  changed_when: false
+
+- name: Add logging to ufw before.rules
+  blockinfile:
+    dest: /etc/ufw/before.rules
+    insertbefore: "COMMIT"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      # log all traffic so psad can analyze
+      -A INPUT -j LOG --log-tcp-options --log-prefix "[IPTABLES] "
+      -A FORWARD -j LOG --log-tcp-options --log-prefix "[IPTABLES] "
+      
+- name: Add logging to ufw before6.rules
+  blockinfile:
+    dest: /etc/ufw/before6.rules
+    insertbefore: "COMMIT"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      # log all traffic so psad can analyze
+      -A INPUT -j LOG --log-tcp-options --log-prefix "[IPTABLES] "
+      -A FORWARD -j LOG --log-tcp-options --log-prefix "[IPTABLES] "
+
+- name: Restart ufw service
+  service: 
+    name: ufw
+    state: restarted
+  changed_when: false
+
+- name: Update psad signatures
+  shell: |
+    psad --sig-update

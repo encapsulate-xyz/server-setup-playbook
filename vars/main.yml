@@ -1,0 +1,25 @@
+---
+disable_root: true
+ssh_port: 22
+
+#swap
+swap_size_gb: 32
+swap_file_path: /swapfile
+swappiness_value: 10
+
+#MSMTP
+mail_to: '' 
+mail_from: '' 
+mail_smtp_server: 'smtp.gmail.com'
+mail_port: 587 
+
+monitor_server_dns: ''
+
+# Node Exporter
+node_exporter_version: '1.8.2'
+
+# Promtail
+promtail_version: '3.0.1'
+
+# Process Exporter
+process_exporter_version: '0.8.2'

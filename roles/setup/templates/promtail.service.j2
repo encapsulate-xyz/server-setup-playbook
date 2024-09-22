@@ -1,0 +1,21 @@
+[Unit]
+Description=Promtail service
+After=network.target
+
+[Service]
+Type=simple
+User=promtail
+ExecStart=/usr/local/bin/promtail -config.file /etc/promtail/promtail.yml
+
+SyslogIdentifier=promtail
+Restart=always
+RestartSec=4
+LimitNOFILE=4096
+NoNewPrivileges=yes
+
+ProtectControlGroups=true
+ProtectKernelModules=true
+ProtectKernelTunables=yes
+
+[Install]
+WantedBy=multi-user.target

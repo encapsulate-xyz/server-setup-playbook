@@ -1,0 +1,22 @@
+[Unit]
+Description=Process Exporter service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/local/bin/process-exporter -config.path /etc/process-exporter/process-exporter.yml
+
+SyslogIdentifier=process-exporter
+Restart=always
+RestartSec=4
+LimitNOFILE=4096
+NoNewPrivileges=yes
+
+ProtectSystem=strict
+ProtectControlGroups=true
+ProtectKernelModules=true
+ProtectKernelTunables=yes
+
+[Install]
+WantedBy=multi-user.target

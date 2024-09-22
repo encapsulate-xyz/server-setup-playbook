@@ -1,0 +1,28 @@
+---   
+- name: Install lynis dependencies
+  apt:
+    name: gpg
+    state: present
+
+- name: Prepare lynis installation
+  shell: |
+    curl -fsSL https://packages.cisofy.com/keys/cisofy-software-public.key | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/cisofy-software-public.gpg
+    echo "deb [arch=amd64,arm64 signed-by=/etc/apt/trusted.gpg.d/cisofy-software-public.gpg] https://packages.cisofy.com/community/lynis/deb/ stable main" | sudo tee /etc/apt/sources.list.d/cisofy-lynis.list
+
+- name: Update and Upgrade
+  apt:
+    update_cache: yes
+
+- name: Install lynis
+  apt:
+    name: 
+      - lynis
+      - colorized-logs
+    state: present
+
+- name: Update lynis 
+  shell: |
+    lynis update info
+    lynis audit system | ansi2html -l > /tmp/lynis-report.html 
+    echo "First Lynis report see attachment" | mail -A /tmp/lynis-report.html -s "Lynis report - $(hostname)" {{ mail_to }}
+  changed_when: false

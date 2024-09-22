@@ -1,0 +1,22 @@
+---
+- name: Install packages
+  apt:
+    name: 
+      - clamav
+      - clamav-freshclam
+      - clamav-daemon
+    state: present
+
+- name: Set cron MAILTO
+  cronvar:
+    user: root
+    name: MAILTO
+    value: "{{ mail_to }}"
+
+- name: Add crontab to run clamav daily at 3 AM
+  cron:
+    name: clamav daily run
+    minute: "0"
+    hour: "3"
+    job: "/usr/bin/clamscan -ri --exclude-dir=\"^/sys\" --no-summary /"
+    user: root
