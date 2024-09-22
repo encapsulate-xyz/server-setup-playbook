@@ -10,8 +10,7 @@ swappiness_value: 10
 #MSMTP
 mail_to: '' 
 mail_from: '' 
-mail_smtp_server: 'smtp.gmail.com' 
-# mail_pw: ''   Moved to ansible vault
+mail_smtp_server: 'smtp.gmail.com'
 mail_port: 587 
 
 monitor_server_dns: ''
@@ -23,4 +22,4 @@ node_exporter_version: '1.8.2'
 promtail_version: '3.0.1'
 
 # Process Exporter
-process_exporter_version: '0.8.3'
+process_exporter_version: '0.8.2'
