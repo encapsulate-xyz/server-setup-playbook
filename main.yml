@@ -4,7 +4,7 @@
   gather_facts: true
   vars_files:
     - vars/main.yml
-    - secrets.yml
+    - vault.yml
   become: true
   pre_tasks:
     - name: Resolve IP address from DNS using getent
