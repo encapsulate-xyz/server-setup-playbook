@@ -1,13 +1,22 @@
 ---
 - name: Create Ansible user
   user:
-    name: ansible
+    name: "{{ item }}"
     shell: /bin/bash
+  loop: 
+    - 'ansible'
+    - 'devops'
 
 - name: Add ansible authorized key
   authorized_key:
     user: ansible
-    key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
+    key: "{{ lookup('file', playbook_dir + '/keys/ansible.pub') }}"
+    exclusive: yes
+
+- name: Add devops authorized key
+  authorized_key:
+    user: devops
+    key: "{{ lookup('file', playbook_dir + '/keys/devops.pub') }}"
     exclusive: yes
 
 - name: Allow sudo for ansible
