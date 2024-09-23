@@ -1,0 +1,21 @@
+---
+- name: Create logrotate configuration for audit logs
+  template:
+    src: logrotate.j2
+    dest: /etc/logrotate.d/audit_logs
+  vars:
+    log_path: '/var/log/audit/*.log'
+
+- name: Create logrotate configuration for /var/spool/mail/root and /var/mail/root
+  template:
+    src: logrotate.j2
+    dest: /etc/logrotate.d/mailroot
+  vars:
+    log_path: '/var/spool/mail/root /var/mail/root'
+
+- name: Create logrotate configuration for msmtp
+  template:
+      src: logrotate.j2
+      dest: /etc/logrotate.d/msmtp
+  vars:
+    log_path: '/var/log/msmtp'

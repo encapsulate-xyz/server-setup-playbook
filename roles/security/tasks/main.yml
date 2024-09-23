@@ -38,3 +38,7 @@
 - name: Configure aide
   import_tasks: configure_aide.yml
   when: aide|default(false)|bool == true
+
+- name: Configure logrotate
+  import_tasks: configure_logrotate.yml
+  when: aide|default(true)|bool == true

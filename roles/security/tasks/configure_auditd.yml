@@ -25,17 +25,3 @@
     state: restarted
     enabled: yes
   changed_when: false
-
-- name: Create logrotate configuration
-  copy:
-    dest: /etc/logrotate.d/audit_logs
-    content: |
-      /var/log/audit/*.log {
-          weekly
-          missingok
-          rotate 7
-          compress
-          delaycompress
-          notifempty
-          create 0640 root root
-      }
