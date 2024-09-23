@@ -20,6 +20,14 @@
     group: root
     mode: '0755'
 
+- name: Clear /tmp directory
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - '/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz'
+    - '/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter'
+
 - name: Create node_exporter systemd unit
   template:
     src: node_exporter.service.j2
