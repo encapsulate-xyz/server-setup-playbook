@@ -1,6 +1,5 @@
 ---
-disable_root: true
-ssh_port: 22
+ssh_login_port: 22
 
 #swap
 swap_size_gb: 32

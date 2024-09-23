@@ -12,7 +12,7 @@
       [sshd]
       enabled = true
       banaction = ufw
-      port = {{ ssh_port | default('ssh') }}
+      port = {{ ssh_login_port | default('ssh') }}
       filter = sshd
       logpath = /var/log/auth.log
       maxretry = 5
