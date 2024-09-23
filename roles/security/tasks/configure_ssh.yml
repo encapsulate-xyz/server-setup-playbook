@@ -13,7 +13,7 @@
 - name: Open ssh port
   ufw:
     rule: limit
-    port: '{{ ssh_port }}'
+    port: '{{ ssh_login_port }}'
     proto: tcp
     comment: 'Allow SSH'
 
@@ -39,7 +39,6 @@
     regexp: '^PermitRootLogin'
     line: 'PermitRootLogin no'
     state: present
-  when: disable_root|default(true)|bool == true
 
 - name: Disable password login
   lineinfile:
