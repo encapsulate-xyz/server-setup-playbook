@@ -7,8 +7,8 @@ swap_file_path: /swapfile
 swappiness_value: 10
 
 #MSMTP
-mail_to: '' 
-mail_from: '' 
+mail_to: 'team@encapsulate.xyz' 
+mail_from: 'bot@encapsulate.xyz' 
 mail_smtp_server: 'smtp.gmail.com'
 mail_port: 587 
 
