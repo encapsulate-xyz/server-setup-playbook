@@ -38,3 +38,9 @@
 - name: Configure aide
   import_tasks: configure_aide.yml
   when: aide|default(false)|bool == true
+
+- name: Configure logrotate
+  import_tasks: configure_logrotate.yml
+
+- name: Configure sudoers file
+  import_tasks: configure_sudoers.yml

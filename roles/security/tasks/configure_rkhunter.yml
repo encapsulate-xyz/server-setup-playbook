@@ -11,6 +11,14 @@
     dest: /etc/rkhunter.conf.local
     remote_src: yes
 
+- name: Ensure rkhunter log directory exists
+  file:
+    path: '/var/log/rkhunter'
+    state: directory
+    mode: '0755'
+    owner: 'root'
+    group: 'root'
+
 - name:  Configure rkhunter general settings
   lineinfile:
     dest: /etc/rkhunter.conf.local
@@ -25,6 +33,7 @@
     - { regexp: '^WEB_CMD', line: 'WEB_CMD=""'}
     - { regexp: '^USE_LOCKING', line: 'USE_LOCKING=1'}
     - { regexp: '^SHOW_SUMMARY_WARNINGS_NUMBER', line: 'SHOW_SUMMARY_WARNINGS_NUMBER=1'}
+    - { regexp: '^LOGFILE', line: 'LOGFILE=/var/log/rkhunter/rkhunter.log'}
 
 - name: Configure rkhunter cron job settings
   lineinfile:
@@ -44,3 +53,22 @@
   shell: |
     rkhunter --update
     rkhunter --propupd
+
+- name: Move rkhunter script from cron.daily
+  command: mv /etc/cron.daily/rkhunter /usr/local/bin/rkhunter-cron
+  args:
+    creates: /usr/local/bin/rkhunter-cron
+    removes: /etc/cron.daily/rkhunter
+
+- name: Ensure rkhunter-cron is executable
+  file:
+    path: /usr/local/bin/rkhunter-cron
+    mode: '0755'
+
+- name: Create cron job for rkhunter
+  cron:
+    name: "Run rkhunter every 5 minutes"
+    minute: "*/5"
+    job: "/usr/local/bin/rkhunter-cron"
+    user: root
+    

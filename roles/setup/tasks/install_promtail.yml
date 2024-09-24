@@ -43,6 +43,14 @@
     group: promtail
     mode: '0755'
 
+- name: Clear /tmp directory
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - '/tmp/promtail-linux-amd64.zip'
+    - '/tmp/promtail-linux-amd64'
+
 - name: Copy promtail config
   template:
     src: 'promtail.yml.j2'

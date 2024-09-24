@@ -1,0 +1,10 @@
+{{ log_path }} {
+    daily
+    missingok
+    rotate 7
+    compress
+    delaycompress
+    notifempty
+    create 0640 root root
+    su root root
+}

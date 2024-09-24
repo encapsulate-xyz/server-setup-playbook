@@ -20,6 +20,14 @@
     group: root
     mode: '0755'
 
+- name: Clear /tmp directory
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - '/tmp/process-exporter-{{ process_exporter_version }}.linux-amd64.tar.gz'
+    - '/tmp/process-exporter-{{ process_exporter_version }}.linux-amd64/process-exporter'
+
 - name: Create process-exporter directory
   file:
     path: '/etc/process-exporter'
