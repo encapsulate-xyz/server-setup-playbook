@@ -41,8 +41,6 @@
 
 - name: Configure logrotate
   import_tasks: configure_logrotate.yml
-  when: logrotate|default(true)|bool == true
 
 - name: Configure sudoers file
   import_tasks: configure_sudoers.yml
-  when: sudoers|default(true)|bool == true
