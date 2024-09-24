@@ -3,24 +3,29 @@
   user:
     name: "{{ item }}"
     shell: /bin/bash
-  loop: 
+  loop:
     - 'ansible'
     - 'devops'
 
-- name: Add ansible authorized key
+- name: Add authorized keys for ansible and devops
   authorized_key:
-    user: ansible
-    key: "{{ lookup('file', playbook_dir + '/keys/ansible.pub') }}"
+    user: "{{ item.user }}"
+    key: "{{ lookup('file', playbook_dir + '/keys/' + item.key) }}"
     exclusive: yes
+  loop:
+    - { user: 'ansible', key: 'ansible.pub' }
+    - { user: 'devops', key: 'devops.pub' }
 
-- name: Add devops authorized key
-  authorized_key:
-    user: devops
-    key: "{{ lookup('file', playbook_dir + '/keys/devops.pub') }}"
-    exclusive: yes
+- name: Configure permissions for ansible and devops users
+  block:
+    - name: Allow sudo for ansible
+      copy:
+        content: 'ansible ALL=(ALL) NOPASSWD: ALL'
+        dest: /etc/sudoers.d/ansible
+        mode: '0600'
 
-- name: Allow sudo for ansible
-  copy:
-    content: 'ansible ALL=(ALL) NOPASSWD: ALL'
-    dest: /etc/sudoers.d/ansible
-    mode: '0600'
+    - name: Add devops user to adm and systemd-journal groups
+      user:
+        name: devops
+        groups: [ 'adm', 'systemd-journal' ]
+        append: yes
