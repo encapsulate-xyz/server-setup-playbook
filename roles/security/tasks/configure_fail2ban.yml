@@ -1,0 +1,27 @@
+---
+- name: Include install packages task
+  ansible.builtin.include_tasks: tasks/install_packages.yml
+  vars:
+    packages:
+      - fail2ban
+
+- name: Configure ssh jail
+  ansible.builtin.blockinfile:
+    path: "{{ fail2ban.config_file }}"
+    block: |
+      [sshd]
+      enabled = true
+      banaction = ufw
+      port = {{ ssh_login_port | default('ssh') }}
+      filter = sshd
+      logpath = {{ fail2ban.log_file }}
+      maxretry = 5
+      findtime = 86400
+      bantime  = -1
+    create: true
+    mode: "0644"
+  notify:
+    - Reload service
+    - Restart service
+  vars:
+    service_name: fail2ban
