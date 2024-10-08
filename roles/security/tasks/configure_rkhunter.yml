@@ -1,0 +1,75 @@
+---
+- name: Include install packages task
+  ansible.builtin.include_tasks: tasks/install_packages.yml
+  vars:
+    packages:
+      - rkhunter
+
+- name: Copy rkhunter's default config file
+  ansible.builtin.copy:
+    src: "{{ rkhunter.old_config_file }}"
+    dest: "{{ rkhunter.config_file }}"
+    remote_src: true
+    mode: "0644"
+
+- name: Ensure rkhunter log directory exists
+  ansible.builtin.file:
+    path: "{{ rkhunter.log_dir }}"
+    state: directory
+    owner: root
+    group: adm
+    mode: "0755"
+
+- name: Configure rkhunter general settings
+  ansible.builtin.lineinfile:
+    dest: "{{ rkhunter.config_file }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: ^UPDATE_MIRRORS, line: UPDATE_MIRRORS=1 }
+    - { regexp: ^MIRRORS_MODE, line: MIRRORS_MODE=0 }
+    - { regexp: ^MAIL-ON-WARNING, line: "MAIL-ON-WARNING={{ mail_to }}" }
+    - { regexp: ^COPY_LOG_ON_ERROR, line: COPY_LOG_ON_ERROR=1 }
+    - { regexp: ^PHALANX2_DIRTEST, line: PHALANX2_DIRTEST=1 }
+    - { regexp: ^WEB_CMD, line: WEB_CMD="" }
+    - { regexp: ^USE_LOCKING, line: USE_LOCKING=1 }
+    - { regexp: ^SHOW_SUMMARY_WARNINGS_NUMBER, line: SHOW_SUMMARY_WARNINGS_NUMBER=1 }
+    - { regexp: ^LOGFILE, line: LOGFILE=/var/log/rkhunter/rkhunter.log }
+
+- name: Configure rkhunter cron job settings
+  ansible.builtin.lineinfile:
+    dest: "{{ rkhunter.cron_config_file }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: ^CRON_DAILY_RUN, line: CRON_DAILY_RUN="true" }
+    - { regexp: ^CRON_DB_UPDATE, line: CRON_DB_UPDATE="true" }
+    - { regexp: ^DB_UPDATE_EMAIL, line: DB_UPDATE_EMAIL="false" }
+    - { regexp: ^REPORT_EMAIL, line: REPORT_EMAIL="root" }
+    - { regexp: ^APT_AUTOGEN, line: APT_AUTOGEN="true" }
+    - { regexp: ^NICE, line: NICE="0" }
+    - { regexp: ^RUN_CHECK_ON_BATTERY, line: RUN_CHECK_ON_BATTERY="false" }
+
+- name: Update rkhunter
+  ansible.builtin.shell: |
+    rkhunter --update
+    rkhunter --propupd
+  changed_when: false
+
+- name: Move rkhunter script from cron.daily
+  ansible.builtin.command: mv {{ rkhunter.etc_cron_config_file }} {{ rkhunter.usr_cron_config_file }}
+  args:
+    creates: "{{ rkhunter.usr_cron_config_file }}"
+    removes: "{{ rkhunter.etc_cron_config_file }}"
+
+- name: Ensure rkhunter-cron is executable
+  ansible.builtin.file:
+    path: "{{ rkhunter.usr_cron_config_file }}"
+    mode: "0755"
+
+- name: Create cron job for rkhunter
+  ansible.builtin.cron:
+    name: Run rkhunter every 5 minutes
+    minute: "*/5"
+    job: "{{ rkhunter.usr_cron_config_file }}"
+    user: root
