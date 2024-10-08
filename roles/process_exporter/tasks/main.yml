@@ -1,0 +1,45 @@
+---
+- name: Include create user task
+  ansible.builtin.include_tasks: tasks/create_user.yml
+  vars:
+    shell: /usr/sbin/nologin
+    user:
+      - { name: "{{ service_identifier }}", nopasswd: true }
+    home: "{{ process_exporter_home_dir }}"
+
+- name: Include create directories task
+  ansible.builtin.include_tasks: tasks/create_directories.yml
+  vars:
+    user: "{{ service_identifier }}"
+    directories: "{{ process_exporter_directories }}"
+    log_file_path: "{{ process_exporter_log_file_path }}"
+
+- name: Include Download, Unarchive and Copy Binary task
+  ansible.builtin.include_tasks: tasks/download_unarchive_and_copy_binary.yml
+  vars:
+    download_url: "{{ process_exporter_url }}"
+    download_dest: "{{ process_exporter_binary_archive_file_name }}"
+    archive_src: "{{ process_exporter_binary_archive_file_name }}"
+    unarchive_dest: "{{ process_exporter_binary_unarchive_dir }}"
+    binary_src: "{{ process_exporter_binary_file }}"
+    binary_dest: "{{ process_exporter_bin_dir }}"
+    user: "{{ service_identifier }}"
+
+- name: Copy process-exporter config
+  ansible.builtin.copy:
+    src: process-exporter.yml
+    dest: "{{ process_exporter_config_dir }}/process-exporter.yml"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+
+- name: Create process-exporter systemd unit
+  ansible.builtin.template:
+    src: process-exporter.service.j2
+    dest: /etc/systemd/system/{{ service_identifier }}.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload service
+    - Restart service
