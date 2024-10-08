@@ -9,15 +9,6 @@
 - name: Create Users
   ansible.builtin.include_tasks: create_users.yml
 
-- name: Install Node Exporter
-  ansible.builtin.include_tasks: install_node_exporter.yml
-
-- name: Install Promtail
-  ansible.builtin.include_tasks: install_promtail.yml
-
-- name: Install Process Exporter
-  ansible.builtin.include_tasks: install_process_exporter.yml
-
 - name: Configure SWAP
   ansible.builtin.include_tasks: configure_swap.yml
 
