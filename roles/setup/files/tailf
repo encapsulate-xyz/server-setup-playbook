@@ -1,0 +1,8 @@
+#!/bin/bash
+
+tail -f "$@" | sed \
+    -e 's/\(.*INFO.*\)/\x1B[32m\1\x1B[39m/' \
+    -e 's/\(.*ERROR.*\)/\x1B[31m\1\x1B[39m/' \
+    -e 's/\(.*DEBUG.*\)/\x1B[36m\1\x1B[39m/' \
+    -e 's/\(.*WARN.*\)/\x1B[33m\1\x1B[39m/' \
+    -e 's/\(.*TRACE.*\)/\x1B[35m\1\x1B[39m/'
