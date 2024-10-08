@@ -1,4 +1,8 @@
 ---
+# Users
+ansible_username: ansible
+devops_username: devops
+
 # SSH
 ssh:
   login_port: 22
@@ -19,19 +23,13 @@ mail:
   port: 587
 
 # Node Exporter
-node_exporter:
-  user: root
-  version: 1.8.2
-  url: https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter.version }}/node_exporter-{{ node_exporter.version }}.linux-amd64.tar.gz
+node_exporter_user: node_exporter
+node_exporter_port: 9100
 
 # Promtail
-promtail:
-  user: promtail
-  version: 3.0.1
-  url: https://github.com/grafana/loki/releases/download/v{{ promtail.version }}/promtail-linux-amd64.zip
+promtail_user: promtail
+promtail_port: 9080
 
 # Process Exporter
-process_exporter:
-  user: root
-  version: "0.8.2"
-  url: https://github.com/ncabatoff/process-exporter/releases/download/v{{ process_exporter.version }}/process-exporter-{{ process_exporter.version }}.linux-amd64.tar.gz
+process_exporter_user: process-exporter
+process_exporter_port: 9256
