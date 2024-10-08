@@ -1,0 +1,19 @@
+---
+- name: Create user
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    shell: "{{ shell }}"
+    groups: "{{ item.groups | default(omit) }}"
+    create_home: "{{ create_home | default(true) }}"
+    system: "{{ system | default(omit) }}"
+    home: "{{ home | default(omit) }}"
+    state: present
+  loop: "{{ user }}"
+
+- name: Allow sudo for user
+  ansible.builtin.copy:
+    content: "{{ item.name }} ALL=(ALL) NOPASSWD: ALL"
+    dest: "/etc/sudoers.d/{{ item.name }}"
+    mode: "0600"
+  loop: "{{ user }}"
+  when: item.nopasswd | default(false)
