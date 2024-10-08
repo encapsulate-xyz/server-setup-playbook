@@ -1,8 +1,8 @@
 ---
 # Users
-ansible_user: ansible
-devops_user: devops
+ansible_username: ansible
+devops_username: devops
 
 # User Public Keys
-ansible_user_key: ansible.pub
-devops_user_key: devops.pub
+ansible_user_public_key: ansible.pub
+devops_user_public_key: devops.pub

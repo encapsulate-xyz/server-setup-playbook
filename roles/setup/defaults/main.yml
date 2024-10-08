@@ -1,5 +1,5 @@
 ---
-ansible_user_sudoers_file: /etc/sudoers.d/ansible
+sudoers_file_for_ansible_user: /etc/sudoers.d/ansible
 
 node_exporter:
   home_dir: /opt/node_exporter
