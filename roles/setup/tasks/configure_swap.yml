@@ -20,6 +20,8 @@
   ansible.builtin.shell: |
     set -o pipefail
     swapon --show --noheadings | awk '{print $1, $2, $3}'
+  args:
+    executable: /bin/bash
   register: swap_details
   when: current_swap_output.stdout != ""
   changed_when: false
@@ -50,7 +52,6 @@
         path: /etc/fstab
         regexp: ^(.*\s+swap\s+.*)$
         replace: "# \\1"
-      notify: update-initramfs
       when: current_swap_output.stdout != "" and current_swap_size != '32G'
 
     - name: Remove swap file if it is a file
@@ -102,7 +103,7 @@
     - name: Set desired swappiness value
       ansible.posix.sysctl:
         name: vm.swappiness
-        value: "{{ swap.swap.swappiness_value }}"
+        value: "{{ swap.swappiness_value }}"
         state: present
       when: current_swappiness.stdout | int != swap.swappiness_value
 
@@ -112,15 +113,11 @@
         line: vm.swappiness={{ swap.swappiness_value }}
         state: present
 
+
 # ====================================================================
 # Group 6: Verify Swap Configuration
 # ====================================================================
 - name: Verify swap configuration
-  handlers:
-    - name: update-initramfs
-      command: update-initramfs -u
-      when: ansible_distribution == "Ubuntu"
-
   block:
     - name: Verify the new swap is active
       ansible.builtin.command: swapon --show
