@@ -1,0 +1,37 @@
+---
+# SSH
+ssh:
+  login_port: 22
+
+monitor_server_dns: monitor.encapsulate.xyz
+
+# swap
+swap:
+  size_gb: 32
+  file_path: /swapfile
+  swappiness_value: 10
+
+# MSMTP
+mail:
+  to: team@encapsulate.xyz
+  from: bot@encapsulate.xyz
+  smtp_server: smtp.gmail.com
+  port: 587
+
+# Node Exporter
+node_exporter:
+  user: root
+  version: 1.8.2
+  url: https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter.version }}/node_exporter-{{ node_exporter.version }}.linux-amd64.tar.gz
+
+# Promtail
+promtail:
+  user: promtail
+  version: 3.0.1
+  url: https://github.com/grafana/loki/releases/download/v{{ promtail.version }}/promtail-linux-amd64.zip
+
+# Process Exporter
+process_exporter:
+  user: root
+  version: "0.8.2"
+  url: https://github.com/ncabatoff/process-exporter/releases/download/v{{ process_exporter.version }}/process-exporter-{{ process_exporter.version }}.linux-amd64.tar.gz
