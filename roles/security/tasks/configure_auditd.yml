@@ -1,0 +1,26 @@
+---
+- name: Include install packages task
+  ansible.builtin.include_tasks: tasks/install_packages.yml
+  vars:
+    packages:
+      - auditd
+      - audispd-plugins
+      - logrotate
+
+- name: Remove default auditd rules
+  ansible.builtin.file:
+    path: "{{ auditd.rules_path }}"
+    state: absent
+
+- name: Copy audit.rules service file
+  ansible.builtin.copy:
+    src: audit.rules
+    dest: '"{{ auditd.rules_path }}"'
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload service
+    - Restart service
+  vars:
+    service_name: auditd
