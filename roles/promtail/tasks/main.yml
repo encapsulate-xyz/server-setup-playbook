@@ -1,0 +1,52 @@
+---
+- name: Include create user task
+  ansible.builtin.include_tasks: tasks/create_user.yml
+  vars:
+    user:
+      - { name: "{{ service_identifier }}", nopasswd: false, groups: ['systemd-journal', 'adm']}
+    shell: /usr/sbin/nologin
+    system: true
+    home: "{{ promtail_home_dir }}"
+
+- name: Include packages task
+  ansible.builtin.include_tasks: tasks/install_packages.yml
+  vars:
+    packages:
+      - unzip
+
+- name: Include create directories task
+  ansible.builtin.include_tasks: tasks/create_directories.yml
+  vars:
+    user: "{{ service_identifier }}"
+    directories: "{{ promtail_directories }}"
+    log_file_path: "{{ promtail_log_file_path }}"
+
+- name: Include Download, Unarchive and Copy Binary task
+  ansible.builtin.include_tasks: tasks/download_unarchive_and_copy_binary.yml
+  vars:
+    download_url: "{{ promtail_url }}"
+    download_dest: "{{ promtail_binary_archive_file_name }}"
+    archive_src: "{{ promtail_binary_archive_file_name }}"
+    unarchive_dest: "{{ promtail_binary_unarchive_dir }}"
+    binary_src: "{{ promtail_binary_file }}"
+    binary_dest: "{{ promtail_bin_dir }}/promtail"
+    user: "{{ service_identifier }}"
+
+- name: Copy promtail config
+  ansible.builtin.template:
+    src: promtail.yml.j2
+    dest: "{{ promtail_config_dir }}/promtail.yml"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+
+- name: Copy promtail service file
+  ansible.builtin.template:
+    src: promtail.service.j2
+    dest: /etc/systemd/system/{{ service_identifier }}.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload service
+    - Restart service
