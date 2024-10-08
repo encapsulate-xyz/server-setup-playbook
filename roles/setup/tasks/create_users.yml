@@ -1,11 +1,11 @@
 ---
-- name: Create Ansible user
-  ansible.builtin.user:
-    name: "{{ item }}"
+- name: Include create user task
+  ansible.builtin.include_tasks: tasks/create_user.yml
+  vars:
     shell: /bin/bash
-  loop:
-    - "{{ ansible_username }}"
-    - "{{ devops_username }}"
+    user:
+      - { name: "{{ ansible_username }}", nopasswd: true }
+      - { name: "{{ devops_username }}", nopasswd: false, groups: ['adm', 'systemd-journal'] }
 
 - name: Add authorized keys for ansible and devops
   ansible.posix.authorized_key:
@@ -13,19 +13,5 @@
     key: "{{ lookup('file', playbook_dir + '/keys/' + item.key) }}"
     exclusive: true
   loop:
-    - { user: "{{ ansible_username }}", key: "{{ ansible_user_public_key }}" }
-    - { user: "{{ devops_username }}", key: "{{ devops_user_public_key }}" }
-
-- name: Configure permissions for ansible and devops users
-  block:
-    - name: Allow sudo for ansible
-      ansible.builtin.copy:
-        content: "{{ ansible_username }} ALL=(ALL) NOPASSWD: ALL"
-        dest: "{{ sudoers_file_for_ansible_user }}"
-        mode: "0600"
-
-    - name: Add devops user to adm and systemd-journal groups
-      ansible.builtin.user:
-        name: "{{ devops_username }}"
-        groups: [adm, systemd-journal]
-        append: true
+    - { user: "{{ ansible_username }}", key: "{{ ansible_username }}.pub" }
+    - { user: "{{ devops_username }}", key: "{{ devops_username }}.pub" }
