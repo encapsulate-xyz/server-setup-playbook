@@ -1,4 +1,8 @@
 ---
+- name: Set service identifier
+  ansible.builtin.set_fact:
+    service_identifier: fail2ban
+
 - name: Include install packages task
   ansible.builtin.include_tasks: tasks/install_packages.yml
   vars:
@@ -7,14 +11,14 @@
 
 - name: Configure ssh jail
   ansible.builtin.blockinfile:
-    path: "{{ fail2ban.config_file }}"
+    path: "{{ security_fail2ban.config_file }}"
     block: |
       [sshd]
       enabled = true
       banaction = ufw
       port = {{ ssh_login_port | default('ssh') }}
       filter = sshd
-      logpath = {{ fail2ban.log_file }}
+      logpath = {{ security_fail2ban.log_file }}
       maxretry = 5
       findtime = 86400
       bantime  = -1
@@ -23,5 +27,3 @@
   notify:
     - Reload service
     - Restart service
-  vars:
-    service_name: fail2ban

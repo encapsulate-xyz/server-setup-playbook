@@ -1,7 +1,7 @@
 ---
 - name: Add email notification settings to sudoers
   ansible.builtin.lineinfile:
-    path: "{{ sudoers.config_file }}"
+    path: "{{ security_sudoers.config_file }}"
     state: present
     line: "{{ item }}"
     validate: /usr/sbin/visudo -cf %s

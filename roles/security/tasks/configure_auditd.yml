@@ -1,4 +1,8 @@
 ---
+- name: Set service identifier as auditd
+  ansible.builtin.set_fact:
+    service_identifier: auditd
+
 - name: Include install packages task
   ansible.builtin.include_tasks: tasks/install_packages.yml
   vars:
@@ -9,18 +13,16 @@
 
 - name: Remove default auditd rules
   ansible.builtin.file:
-    path: "{{ auditd.rules_path }}"
+    path: "{{ security_auditd.rules_path }}"
     state: absent
 
 - name: Copy audit.rules service file
   ansible.builtin.copy:
     src: audit.rules
-    dest: '"{{ auditd.rules_path }}"'
+    dest: '"{{ security_auditd.rules_path }}"'
     owner: root
     group: root
     mode: "0644"
   notify:
     - Reload service
     - Restart service
-  vars:
-    service_name: auditd

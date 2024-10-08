@@ -1,15 +1,15 @@
 ---
 # Auditd
-auditd:
+security_auditd:
   rules_path: /etc/audit/rules.d/audit.rules
 
 # Fail2Ban
-fail2ban:
+security_fail2ban:
   config_file: /etc/fail2ban/jail.d/ssh.local
   log_file: /var/log/auth.log
 
 # Logrotate
-logrotate:
+security_logrotate:
   auditd_config_file: /etc/logrotate.d/audit_logs
   auditd_logs_path: /var/log/audit/*.log
   mailroot_config_file: /etc/logrotate.d/mailroot
@@ -20,14 +20,14 @@ logrotate:
   rkhunter_logs_path: /var/log/rkhunter/*
 
 # msmtp
-msmtp:
+security_msmtp:
   config_file: /etc/msmtprc
   log_file: /var/log/msmtp
   alias_file: /etc/aliases
   default_mail_config: /etc/mail.rc
 
 # rkhunter
-rkhunter:
+security_rkhunter:
   old_config_file: /etc/rkhunter.conf
   config_file: /etc/rkhunter.conf.local
   log_dir: /var/log/rkhunter
@@ -36,9 +36,9 @@ rkhunter:
   usr_cron_config_file: /usr/local/bin/rkhunter-cron
 
 # ssh
-ssh:
+security_ssh:
   config_file: /etc/ssh/sshd_config
 
 # sudoers
-sudoers:
+security_sudoers:
   config_file: /etc/sudoers

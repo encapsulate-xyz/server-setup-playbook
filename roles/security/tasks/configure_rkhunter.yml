@@ -7,14 +7,14 @@
 
 - name: Copy rkhunter's default config file
   ansible.builtin.copy:
-    src: "{{ rkhunter.old_config_file }}"
-    dest: "{{ rkhunter.config_file }}"
+    src: "{{ security_rkhunter.old_config_file }}"
+    dest: "{{ security_rkhunter.config_file }}"
     remote_src: true
     mode: "0644"
 
 - name: Ensure rkhunter log directory exists
   ansible.builtin.file:
-    path: "{{ rkhunter.log_dir }}"
+    path: "{{ security_rkhunter.log_dir }}"
     state: directory
     owner: root
     group: adm
@@ -22,7 +22,7 @@
 
 - name: Configure rkhunter general settings
   ansible.builtin.lineinfile:
-    dest: "{{ rkhunter.config_file }}"
+    dest: "{{ security_rkhunter.config_file }}"
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
   loop:
@@ -38,7 +38,7 @@
 
 - name: Configure rkhunter cron job settings
   ansible.builtin.lineinfile:
-    dest: "{{ rkhunter.cron_config_file }}"
+    dest: "{{ security_rkhunter.cron_config_file }}"
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
   loop:
@@ -57,19 +57,19 @@
   changed_when: false
 
 - name: Move rkhunter script from cron.daily
-  ansible.builtin.command: mv {{ rkhunter.etc_cron_config_file }} {{ rkhunter.usr_cron_config_file }}
+  ansible.builtin.command: mv {{ security_rkhunter.etc_cron_config_file }} {{ security_rkhunter.usr_cron_config_file }}
   args:
-    creates: "{{ rkhunter.usr_cron_config_file }}"
-    removes: "{{ rkhunter.etc_cron_config_file }}"
+    creates: "{{ security_rkhunter.usr_cron_config_file }}"
+    removes: "{{ security_rkhunter.etc_cron_config_file }}"
 
 - name: Ensure rkhunter-cron is executable
   ansible.builtin.file:
-    path: "{{ rkhunter.usr_cron_config_file }}"
+    path: "{{ security_rkhunter.usr_cron_config_file }}"
     mode: "0755"
 
 - name: Create cron job for rkhunter
   ansible.builtin.cron:
     name: Run rkhunter every 5 minutes
     minute: "*/5"
-    job: "{{ rkhunter.usr_cron_config_file }}"
+    job: "{{ security_rkhunter.usr_cron_config_file }}"
     user: root

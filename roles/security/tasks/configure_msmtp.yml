@@ -9,7 +9,7 @@
 
 - name: Configure msmtp mail settings
   ansible.builtin.blockinfile:
-    path: "{{ msmtp.config_file }}"
+    path: "{{ security_msmtp.config_file }}"
     block: |
       defaults
       port {{ mail.port }}
@@ -21,22 +21,22 @@
       from {{ mail.from }}
       auth on
       user {{ mail.from }}
-      password {{ mail_pw }}
+      password {{ mail.password }}
       account default: {{ mail.from }}
       aliases /etc/aliases
-      logfile {{ msmtp.log_file }}
+      logfile {{ security_msmtp.log_file }}
     create: true
     mode: "0644"
 
 - name: Set chmod for mail config file
   ansible.builtin.file:
-    path: "{{ msmtp.config_file }}"
+    path: "{{ security_msmtp.config_file }}"
     group: msmtp
     mode: "0644"
 
 - name: Configure email alias forwarding
   ansible.builtin.lineinfile:
-    dest: "{{ msmtp.alias_file }}"
+    dest: "{{ security_msmtp.alias_file }}"
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
     create: true
@@ -47,7 +47,7 @@
 
 - name: Set msmtp as default mail handler
   ansible.builtin.lineinfile:
-    path: "{{ msmtp.default_mail_config }}"
+    path: "{{ security_msmtp.default_mail_config }}"
     regexp: ^set sendmail
     line: set sendmail="/usr/bin/msmtp -t"
     create: true
