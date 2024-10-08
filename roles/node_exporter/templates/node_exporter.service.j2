@@ -1,0 +1,17 @@
+[Unit]
+Description=Prometheus Node Exporter
+After=network-online.target
+
+[Service]
+User={{ service_identifier }}
+Group={{ service_identifier }}
+ExecStart={{ node_exporter_bin_dir }}/node_exporter --web.listen-address=:{{ node_exporter_port }}
+
+Restart=always
+RestartSec=4
+LimitNOFILE=65536
+StandardOutput=append:{{ node_exporter_log_file_path }}
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target

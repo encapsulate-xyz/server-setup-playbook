@@ -1,0 +1,18 @@
+---
+node_exporter_home_dir: /opt/{{ service_identifier }}
+
+node_exporter_bin_dir: "{{ node_exporter_home_dir }}/bin"
+node_exporter_log_dir: "{{ node_exporter_home_dir }}/log"
+node_exporter_config_dir: "{{ node_exporter_home_dir }}/config"
+
+node_exporter_directories:
+  - "{{ node_exporter_home_dir }}"
+  - "{{ node_exporter_bin_dir }}"
+  - "{{ node_exporter_config_dir }}"
+  - "{{ node_exporter_log_dir }}"
+
+node_exporter_binary_unarchive_dir: /tmp
+node_exporter_binary_archive_file_name: "{{ node_exporter_binary_unarchive_dir }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+node_exporter_binary_file: "{{ node_exporter_binary_unarchive_dir }}/node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter"
+
+node_exporter_log_file_path: "{{ node_exporter_log_dir }}/{{ service_identifier }}.log"
