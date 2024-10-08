@@ -1,0 +1,43 @@
+---
+- name: Include create directories task
+  ansible.builtin.include_tasks: tasks/create_directories.yml
+  vars:
+    user: "{{ process_exporter.user }}"
+    directories:
+      - "{{ process-exporter.home_dir }}"
+      - "{{ process_exporter.bin_dir }}"
+      - "{{ process_exporter.log_dir }}"
+      - "{{ process_exporter.config_dir }}"
+    log_file_path: "{{ process_exporter.log_file_path }}"
+
+- name: Include Download, Unarchive and Copy Binary task
+  ansible.builtin.include_tasks: tasks/download_unarchive_and_copy_binary.yml
+  vars:
+    download_url: "{{ process_exporter.url }}"
+    download_dest: "{{ process_exporter.archive_file_name }}"
+    archive_src: "{{ process_exporter.archive_file_name }}"
+    unarchive_dest: "{{ process_exporter.unarchive_dir }}"
+    binary_src: "{{ process_exporter.binary_file }}"
+    binary_dest: "{{ process_exporter.bin_dir }}"
+    user: "{{ process_exporter.user }}"
+
+- name: Copy process-exporter config
+  ansible.builtin.copy:
+    src: process-exporter.yml
+    dest: "{{ process-exporter.config_dir }}/process-exporter.yml"
+    owner: "{{ process_exporter.user }}"
+    group: "{{ process_exporter.user }}"
+    mode: "0644"
+
+- name: Create process-exporter systemd unit
+  ansible.builtin.template:
+    src: process-exporter.service.j2
+    dest: /etc/systemd/system/process-exporter.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload service
+    - Restart service
+  vars:
+    service_name: process-exporter
