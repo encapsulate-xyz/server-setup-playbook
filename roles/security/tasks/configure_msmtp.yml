@@ -1,0 +1,54 @@
+---
+- name: Include install packages task
+  ansible.builtin.include_tasks: tasks/install_packages.yml
+  vars:
+    packages:
+      - msmtp
+      - msmtp-mta
+      - mailutils
+
+- name: Configure msmtp mail settings
+  ansible.builtin.blockinfile:
+    path: "{{ msmtp.config_file }}"
+    block: |
+      defaults
+      port {{ mail.port }}
+      tls on
+      tls_trust_file /etc/ssl/certs/ca-certificates.crt
+      account {{ mail.from }}
+      host {{ mail.smtp_server }}
+      set_from_header on
+      from {{ mail.from }}
+      auth on
+      user {{ mail.from }}
+      password {{ mail_pw }}
+      account default: {{ mail.from }}
+      aliases /etc/aliases
+      logfile {{ msmtp.log_file }}
+    create: true
+    mode: "0644"
+
+- name: Set chmod for mail config file
+  ansible.builtin.file:
+    path: "{{ msmtp.config_file }}"
+    group: msmtp
+    mode: "0644"
+
+- name: Configure email alias forwarding
+  ansible.builtin.lineinfile:
+    dest: "{{ msmtp.alias_file }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    create: true
+    mode: "0644"
+  loop:
+    - { regexp: "^root:", line: "root: {{ mail.to }}" }
+    - { regexp: "^default:", line: "default: {{ mail.to }}" }
+
+- name: Set msmtp as default mail handler
+  ansible.builtin.lineinfile:
+    path: "{{ msmtp.default_mail_config }}"
+    regexp: ^set sendmail
+    line: set sendmail="/usr/bin/msmtp -t"
+    create: true
+    mode: "0644"
