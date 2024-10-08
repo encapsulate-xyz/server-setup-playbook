@@ -1,0 +1,58 @@
+---
+- name: Include install packages task
+  ansible.builtin.include_tasks: tasks/install_packages.yml
+  vars:
+    packages:
+      - ufw
+
+- name: Enable firewall
+  community.general.ufw:
+    state: enabled
+    logging: true
+
+- name: Open ssh port
+  community.general.ufw:
+    rule: limit
+    port: "{{ ssh.login_port }}"
+    proto: tcp
+    comment: Allow SSH
+
+- name: Allow traffic from Monitor Server to Node Exporter
+  community.general.ufw:
+    rule: allow
+    from_ip: "{{ monitor_server_ip }}"
+    to_port: 9100
+    proto: tcp
+    comment: Allow traffic from Monitor Server to Node Exporter
+
+- name: Allow traffic from Monitor Server to Process Exporter
+  community.general.ufw:
+    rule: allow
+    from_ip: "{{ monitor_server_ip }}"
+    to_port: 9256
+    proto: tcp
+    comment: Allow traffic from Monitor Server to Process Exporter
+
+- name: Disable root login over SSH
+  ansible.builtin.lineinfile:
+    dest: "{{ ssh.config_file }}"
+    regexp: ^PermitRootLogin
+    line: PermitRootLogin no
+    state: present
+  notify:
+    - Reload service
+    - Restart service
+  vars:
+    service_name: ssh
+
+- name: Disable password login
+  ansible.builtin.lineinfile:
+    dest: "{{ ssh.config_file }}"
+    regexp: ^PasswordAuthentication
+    line: PasswordAuthentication no
+    state: present
+  notify:
+    - Reload service
+    - Restart service
+  vars:
+    service_name: ssh
