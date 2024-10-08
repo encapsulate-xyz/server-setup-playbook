@@ -1,0 +1,33 @@
+---
+- name: Create logrotate configuration for audit logs
+  ansible.builtin.template:
+    src: logrotate.j2
+    dest: "{{ logrotate.auditd_config_file }}"
+    mode: "0644"
+  vars:
+    log_path: "{{ logrotate.auditd_logs_path }}"
+
+
+- name: Create logrotate configuration for /var/spool/mail/root and /var/mail/root
+  ansible.builtin.template:
+    src: logrotate.j2
+    dest: "{{ logrotate.mailroot_config_file }}"
+    mode: "0644"
+  vars:
+    log_path: "{{ logrotate.mailroot_logs_path }}"
+
+- name: Create logrotate configuration for msmtp
+  ansible.builtin.template:
+    src: logrotate.j2
+    dest: "{{ logrotate.msmtp_config_file }}"
+    mode: "0644"
+  vars:
+    log_path: "{{ logrotate.msmtp_logs_path }}"
+
+- name: Create logrotate configuration for rkhunter
+  ansible.builtin.template:
+    src: logrotate.j2
+    dest: "{{ logrotate.rkhunter_config_file }}"
+    mode: "0644"
+  vars:
+    log_path: "{{ logrotate.rkhunter_logs_path }}"
