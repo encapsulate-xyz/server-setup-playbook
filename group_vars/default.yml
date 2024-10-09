@@ -1,7 +1,7 @@
 ---
 # Node Exporter
 node_exporter_version: 1.8.2
-node_exporter_url: "https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+node_exporter_url: https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz
 
 # Promtail
 promtail_version: 3.0.1
@@ -9,4 +9,4 @@ promtail_url: https://github.com/grafana/loki/releases/download/v{{ promtail_ver
 
 # Process Exporter
 process_exporter_version: 0.8.2
-process_exporter_url: "https://github.com/ncabatoff/process-exporter/releases/download/v{{ process_exporter_version }}/process-exporter-{{ process_exporter_version }}.linux-amd64.tar.gz"
+process_exporter_url: https://github.com/ncabatoff/process-exporter/releases/download/v{{ process_exporter_version }}/process-exporter-{{ process_exporter_version}}.linux-amd64.tar.gz

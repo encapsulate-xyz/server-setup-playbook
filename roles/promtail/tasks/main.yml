@@ -3,7 +3,7 @@
   ansible.builtin.include_tasks: tasks/create_user.yml
   vars:
     user:
-      - { name: "{{ service_identifier }}", nopasswd: false, groups: ['systemd-journal', 'adm']}
+      - { name: "{{ service_identifier }}", nopasswd: false, groups: [systemd-journal, adm] }
     shell: /usr/sbin/nologin
     system: true
     home: "{{ promtail_home_dir }}"

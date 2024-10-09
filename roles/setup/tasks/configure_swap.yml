@@ -113,7 +113,6 @@
         line: vm.swappiness={{ swap.swappiness_value }}
         state: present
 
-
 # ====================================================================
 # Group 6: Verify Swap Configuration
 # ====================================================================

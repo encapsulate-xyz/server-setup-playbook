@@ -13,7 +13,7 @@
 - name: Allow sudo for user
   ansible.builtin.copy:
     content: "{{ item.name }} ALL=(ALL) NOPASSWD: ALL"
-    dest: "/etc/sudoers.d/{{ item.name }}"
+    dest: /etc/sudoers.d/{{ item.name }}
     mode: "0600"
   loop: "{{ user }}"
   when: item.nopasswd | default(false)

@@ -5,7 +5,7 @@
     shell: /bin/bash
     user:
       - { name: "{{ ansible_username }}", nopasswd: true }
-      - { name: "{{ devops_username }}", nopasswd: false, groups: ['adm', 'systemd-journal'] }
+      - { name: "{{ devops_username }}", nopasswd: false, groups: [adm, systemd-journal] }
 
 - name: Add authorized keys for ansible and devops
   ansible.posix.authorized_key:
