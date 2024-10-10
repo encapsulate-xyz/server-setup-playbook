@@ -2,9 +2,8 @@
 - name: Include create user task
   ansible.builtin.include_tasks: tasks/create_user.yml
   vars:
-    shell: /usr/sbin/nologin
-    user:
-      - { name: "{{ service_identifier }}", nopasswd: true }
+    user_name: "{{ service_identifier }}"
+    allow_passwordless_sudo: true
     home: "{{ process_exporter_home_dir }}"
 
 - name: Include create directories task

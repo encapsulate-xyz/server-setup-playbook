@@ -2,10 +2,8 @@
 - name: Include create user task
   ansible.builtin.include_tasks: tasks/create_user.yml
   vars:
-    user:
-      - { name: "{{ service_identifier }}", nopasswd: false, groups: [systemd-journal, adm] }
-    shell: /usr/sbin/nologin
-    system: true
+    user_name: "{{ service_identifier }}"
+    user_groups: [systemd-journal, adm]
     home: "{{ promtail_home_dir }}"
 
 - name: Include packages task

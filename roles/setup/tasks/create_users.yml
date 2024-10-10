@@ -1,11 +1,19 @@
 ---
-- name: Include create user task
+- name: Include create user task for ansible_username
   ansible.builtin.include_tasks: tasks/create_user.yml
   vars:
     shell: /bin/bash
-    user:
-      - { name: "{{ ansible_username }}", nopasswd: true }
-      - { name: "{{ devops_username }}", nopasswd: false, groups: [adm, systemd-journal] }
+    is_system_user: false
+    user_name: "{{ ansible_username }}"
+    allow_passwordless_sudo: true
+
+- name: Include create user task for devops_username
+  ansible.builtin.include_tasks: tasks/create_user.yml
+  vars:
+    shell: /bin/bash
+    is_system_user: false
+    user_name: "{{ devops_username }}"
+    user_groups: [adm, systemd-journal]
 
 - name: Add authorized keys for ansible and devops
   ansible.posix.authorized_key:

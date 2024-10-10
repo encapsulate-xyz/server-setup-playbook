@@ -1,19 +1,20 @@
 ---
 - name: Create user
   ansible.builtin.user:
-    name: "{{ item.name }}"
-    shell: "{{ shell }}"
-    groups: "{{ item.groups | default(omit) }}"
+    name: "{{ user_name }}"
+    shell: "{{ shell | default('/usr/sbin/nologin') }}"
+    groups: "{{ user_groups | default(omit) }}"
     create_home: "{{ create_home | default(true) }}"
-    system: "{{ system | default(omit) }}"
+    system: "{{ is_system_user | default(true) }}"
     home: "{{ home | default(omit) }}"
     state: present
-  loop: "{{ user }}"
 
 - name: Allow sudo for user
   ansible.builtin.copy:
     content: "{{ item.name }} ALL=(ALL) NOPASSWD: ALL"
-    dest: /etc/sudoers.d/{{ item.name }}
-    mode: "0600"
+    dest: "/etc/sudoers.d/{{ item.name }}"
+    owner: "root"
+    group: "root"
+    mode: "0440"
   loop: "{{ user }}"
-  when: item.nopasswd | default(false)
+  when: item.allow_passwordless_sudo | default(false)
