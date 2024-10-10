@@ -3,6 +3,9 @@
 ansible_username: ansible
 devops_username: devops
 
+system_arch: linux-amd64
+tmp_dir: /tmp
+
 # SSH
 ssh:
   login_port: 22
@@ -22,10 +25,6 @@ mail:
   smtp_server: smtp.gmail.com
   port: 587
 
-# Node Exporter
-node_exporter_user: node_exporter
-node_exporter_port: 9100
-
 # Promtail
 promtail_user: promtail
 promtail_port: 9080
@@ -33,3 +32,10 @@ promtail_port: 9080
 # Process Exporter
 process_exporter_user: process-exporter
 process_exporter_port: 9256
+
+node_exporter:
+  service_identifier: node-exporter
+  source_url: https://github.com/prometheus/node_exporter/releases/download
+  file_extension: tar.gz
+  port:
+    web_listen_address: 9100

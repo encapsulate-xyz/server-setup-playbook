@@ -5,7 +5,8 @@ After=network-online.target
 [Service]
 User={{ service_identifier }}
 Group={{ service_identifier }}
-ExecStart={{ node_exporter_bin_dir }}/node_exporter --web.listen-address=:{{ node_exporter_port }}
+WorkingDirectory={{ node_exporter_home_dir }}
+ExecStart={{ node_exporter_bin_dir }}/{{ service_identifier }} --web.listen-address=:{{ node_exporter.port.web_listen_address }}
 
 Restart=always
 RestartSec=4

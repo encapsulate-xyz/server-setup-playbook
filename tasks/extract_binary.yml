@@ -1,0 +1,24 @@
+---
+- name: Download and unarchive the binary
+  ansible.builtin.unarchive:
+    src: "{{ source_url }}/{{ default_binary_name }}-{{ version }}.{{ system_arch }}.{{ file_extension }}"
+    dest: "{{ tmp_dir }}"
+    remote_src: true
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Copy the binary file
+  ansible.builtin.copy:
+    src: "{{ tmp_dir }}/{{ default_binary_name }}-{{ version }}.{{ system_arch }}/{{ default_binary_name }}"
+    dest: "{{ binary_dest_path }}"
+    remote_src: true
+    owner: root
+    group: root
+    force: true
+    mode: "0755"
+
+- name: Clean up the temporary files in /tmp
+  ansible.builtin.file:
+    path: "{{ tmp_dir }}/{{ default_binary_name }}-{{ version }}.{{ system_arch }}"
+    state: absent
