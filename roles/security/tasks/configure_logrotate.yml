@@ -1,32 +1,13 @@
 ---
-- name: Create logrotate configuration for audit logs
+- name: Create logrotate configurations for audit mail msmtp rkhunter logs
   ansible.builtin.template:
     src: logrotate.j2
-    dest: "{{ security_logrotate.auditd_config_file }}"
+    dest: "{{ item.config_file }}"
     mode: "0644"
+  loop:
+    - { config_file: "{{ security_logrotate.auditd_config_file }}", log_path: "{{ security_logrotate.auditd_logs_path }}" }
+    - { config_file: "{{ security_logrotate.mailroot_config_file }}", log_path: "{{ security_logrotate.mailroot_logs_path }}" }
+    - { config_file: "{{ security_logrotate.msmtp_config_file }}", log_path: "{{ security_logrotate.msmtp_logs_path }}" }
+    - { config_file: "{{ security_logrotate.rkhunter_config_file }}", log_path: "{{ security_logrotate.rkhunter_logs_path }}" }
   vars:
-    log_path: "{{ security_logrotate.auditd_logs_path }}"
-
-- name: Create logrotate configuration for /var/spool/mail/root and /var/mail/root
-  ansible.builtin.template:
-    src: logrotate.j2
-    dest: "{{ security_logrotate.mailroot_config_file }}"
-    mode: "0644"
-  vars:
-    log_path: "{{ security_logrotate.mailroot_logs_path }}"
-
-- name: Create logrotate configuration for msmtp
-  ansible.builtin.template:
-    src: logrotate.j2
-    dest: "{{ security_logrotate.msmtp_config_file }}"
-    mode: "0644"
-  vars:
-    log_path: "{{ security_logrotate.msmtp_logs_path }}"
-
-- name: Create logrotate configuration for rkhunter
-  ansible.builtin.template:
-    src: logrotate.j2
-    dest: "{{ security_logrotate.rkhunter_config_file }}"
-    mode: "0644"
-  vars:
-    log_path: "{{ security_logrotate.rkhunter_logs_path }}"
+    log_path: "{{ item.log_path }}"
