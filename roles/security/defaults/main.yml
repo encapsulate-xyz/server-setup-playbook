@@ -15,7 +15,7 @@ security_logrotate:
   mailroot_config_file: /etc/logrotate.d/mailroot
   mailroot_logs_path: /var/spool/mail/root /var/mail/root
   msmtp_config_file: /etc/logrotate.d/msmtp
-  msmtp__logs_path: /var/log/msmtp
+  msmtp_logs_path: /var/log/msmtp
   rkhunter_config_file: /etc/logrotate.d/rkhunter
   rkhunter_logs_path: /var/log/rkhunter/*
 
@@ -28,7 +28,7 @@ security_msmtp:
 
 # rkhunter
 security_rkhunter:
-  old_config_file: /etc/rkhunter.conf
+  default_config_file: /etc/rkhunter.conf
   config_file: /etc/rkhunter.conf.local
   log_dir: /var/log/rkhunter
   cron_config_file: /etc/default/rkhunter
