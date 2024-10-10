@@ -16,7 +16,7 @@
       [sshd]
       enabled = true
       banaction = ufw
-      port = {{ ssh_login_port | default('ssh') }}
+      port = {{ ssh.ports.login | default('ssh') }}
       filter = sshd
       logpath = {{ security_fail2ban.log_file }}
       maxretry = 5

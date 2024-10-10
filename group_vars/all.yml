@@ -1,13 +1,16 @@
 ---
-# Users
-ansible_username: ansible
-devops_username: devops
-
 system_arch: linux-amd64
 tmp_dir: /tmp
 
+# Users
+login_users:
+  ansible: ansible
+  devops: devops
+
 # SSH
 ssh:
+  ports:
+    login: 22
   login_port: 22
 
 monitor_server_dns: monitor.encapsulate.xyz

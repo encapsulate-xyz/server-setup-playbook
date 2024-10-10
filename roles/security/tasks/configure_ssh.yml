@@ -17,7 +17,7 @@
 - name: Open ssh port
   community.general.ufw:
     rule: limit
-    port: "{{ ssh.login_port }}"
+    port: "{{ ssh.ports.login }}"
     proto: tcp
     comment: Allow SSH
 
