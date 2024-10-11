@@ -9,6 +9,7 @@ login_users:
 
 # SSH
 ssh:
+  service_identifier: ssh
   ports:
     login: 22
 
@@ -51,3 +52,9 @@ node_exporter:
   file_extension: tar.gz
   ports:
     web_listen_address: 9100
+
+auditd:
+  service_identifier: auditd
+
+fail2ban:
+  service_identifier: fail2ban

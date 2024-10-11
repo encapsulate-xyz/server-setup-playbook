@@ -1,7 +1,7 @@
 ---
 - name: Set service identifier
   ansible.builtin.set_fact:
-    service_identifier: ssh
+    service_identifier: "{{ ssh.service_identifier }}"
 
 - name: Install ufw
   ansible.builtin.apt:

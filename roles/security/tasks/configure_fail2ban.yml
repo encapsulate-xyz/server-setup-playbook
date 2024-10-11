@@ -1,7 +1,7 @@
 ---
 - name: Set service identifier
   ansible.builtin.set_fact:
-    service_identifier: fail2ban
+    service_identifier: "{{ fail2ban.service_identifier }}"
 
 - name: Install fail2ban
   ansible.builtin.apt:

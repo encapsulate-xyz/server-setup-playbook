@@ -1,7 +1,7 @@
 ---
 - name: Set service identifier as auditd
   ansible.builtin.set_fact:
-    service_identifier: auditd
+    service_identifier: "{{ auditd.service_identifier }}"
 
 - name: Install Auditd
   ansible.builtin.apt:
