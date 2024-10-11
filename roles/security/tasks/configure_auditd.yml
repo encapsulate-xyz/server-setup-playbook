@@ -3,13 +3,15 @@
   ansible.builtin.set_fact:
     service_identifier: auditd
 
-- name: Include install packages task
-  ansible.builtin.include_tasks: tasks/install_packages.yml
-  vars:
-    packages:
-      - auditd
-      - audispd-plugins
-      - logrotate
+- name: Install Auditd
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  loop: 
+    - auditd
+    - audispd-plugins
+    - logrotate
 
 - name: Copy audit.rules service file
   ansible.builtin.copy:

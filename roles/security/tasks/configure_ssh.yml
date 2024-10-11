@@ -3,11 +3,11 @@
   ansible.builtin.set_fact:
     service_identifier: ssh
 
-- name: Include install packages task
-  ansible.builtin.include_tasks: tasks/install_packages.yml
-  vars:
-    packages:
-      - ufw
+- name: Install ufw
+  ansible.builtin.apt:
+    name: ufw
+    state: present
+    update_cache: true
 
 - name: Enable firewall
   community.general.ufw:

@@ -1,10 +1,13 @@
 ---
-- name: Install basic packages
-  ansible.builtin.include_tasks: tasks/install_packages.yml
-  vars:
-    packages:
-      - build-essential
-      - cargo
+- name: Install essential packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  loop:
+    - build-essential
+    - cargo
+    - unzip
 
 - name: Create Users
   ansible.builtin.include_tasks: create_users.yml

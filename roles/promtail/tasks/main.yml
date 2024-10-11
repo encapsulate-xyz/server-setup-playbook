@@ -6,12 +6,6 @@
     user_groups: [systemd-journal, adm]
     home: "{{ promtail_home_dir }}"
 
-- name: Include packages task
-  ansible.builtin.include_tasks: tasks/install_packages.yml
-  vars:
-    packages:
-      - unzip
-
 - name: Include create directories task
   ansible.builtin.include_tasks: tasks/create_directories.yml
   vars:

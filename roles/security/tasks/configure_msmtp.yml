@@ -1,11 +1,13 @@
 ---
-- name: Include install packages task
-  ansible.builtin.include_tasks: tasks/install_packages.yml
-  vars:
-    packages:
-      - msmtp
-      - msmtp-mta
-      - mailutils
+- name: Install msmtp
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  loop: 
+    - msmtp
+    - msmtp-mta
+    - mailutils
 
 - name: Configure msmtp mail settings
   ansible.builtin.blockinfile:

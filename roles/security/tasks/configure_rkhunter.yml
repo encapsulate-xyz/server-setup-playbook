@@ -1,9 +1,9 @@
 ---
-- name: Include install packages task
-  ansible.builtin.include_tasks: tasks/install_packages.yml
-  vars:
-    packages:
-      - rkhunter
+- name: Install rkhunter
+  ansible.builtin.apt:
+    name: rkhunter
+    state: present
+    update_cache: true
 
 - name: Copy rkhunter's default config file
   ansible.builtin.copy:

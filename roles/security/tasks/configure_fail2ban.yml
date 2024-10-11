@@ -3,11 +3,11 @@
   ansible.builtin.set_fact:
     service_identifier: fail2ban
 
-- name: Include install packages task
-  ansible.builtin.include_tasks: tasks/install_packages.yml
-  vars:
-    packages:
-      - fail2ban
+- name: Install fail2ban
+  ansible.builtin.apt:
+    name: fail2ban
+    state: present
+    update_cache: true
 
 - name: Configure ssh jail
   ansible.builtin.blockinfile:
