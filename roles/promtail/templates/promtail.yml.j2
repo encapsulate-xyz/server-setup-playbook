@@ -9,16 +9,6 @@ clients:
   - url: http://{{ monitor_server_dns }}:3100/loki/api/v1/push
 
 scrape_configs:
-  - job_name: journal
-    journal:
-      max_age: 12h
-      labels:
-        job: systemd-journal
-        host: {{ ansible_hostname }}
-    relabel_configs:
-      - source_labels: ["__journal__systemd_unit"]
-        target_label: "unit"
-
   - job_name: custom_logs
     static_configs:
       - targets:
