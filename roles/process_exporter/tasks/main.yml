@@ -17,10 +17,9 @@
   ansible.builtin.include_tasks: tasks/extract_binary.yml
   vars:
     source_url: "{{ process_exporter.source_url }}/v{{ process_exporter.version }}"
+    suffix_url: "{{ process_exporter_default_binary_name }}-{{ process_exporter.version }}.{{ system_arch }}.{{ process_exporter.file_extension }}"
+    extracted_binary_path: "{{ process_exporter_default_binary_name }}-{{ process_exporter.version }}.{{ system_arch }}/{{ process_exporter_default_binary_name }}"
     binary_dest_path: "{{ process_exporter_bin_dir }}/{{ service_identifier }}"
-    default_binary_name: "{{ process_exporter_default_binary_name }}"
-    file_extension: "{{ process_exporter.file_extension }}"
-    version: "{{ process_exporter.version }}"
 
 - name: Copy process-exporter config
   ansible.builtin.copy:

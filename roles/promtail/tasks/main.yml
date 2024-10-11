@@ -16,7 +16,7 @@
 - name: Include Download, Unarchive and Copy Binary task
   ansible.builtin.include_tasks: tasks/extract_binary.yml
   vars:
-    source_url: "{{ promtail.source_url }}"
+    source_url: "{{ promtail.source_url }}/v{{ promtail.version }}"
     suffix_url: "{{ promtail_default_binary_name }}.{{ promtail.file_extension }}"
     binary_dest_path: "{{ promtail_bin_dir }}/{{ service_identifier }}"
     extracted_binary_path: "{{ promtail_default_binary_name }}"
