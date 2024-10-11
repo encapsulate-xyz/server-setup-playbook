@@ -1,51 +1,11 @@
 ---
+monitor_server_dns: monitor.encapsulate.xyz
 system_arch: linux-amd64
 tmp_dir: /tmp
 
-# Users
-login_users:
-  ansible: ansible
-  devops: devops
-
-# SSH
-ssh:
-  service_identifier: ssh
-  ports:
-    login: 22
-
-monitor_server_dns: monitor.encapsulate.xyz
-
-# swap
-swap:
-  size_gb: 32
-  file_path: /swapfile
-  swappiness_value: 10
-
-# MSMTP
-mail:
-  to: team@encapsulate.xyz
-  from: bot@encapsulate.xyz
-  smtp_server: smtp.gmail.com
-  port: 587
-
-# Promtail
-
-promtail:
-  service_identifier: promtail
-  source_url: https://github.com/grafana/loki/releases/download
-  file_extension: zip
-  ports:
-    http_listen_port: 9080
-
-# Process Exporter
-process_exporter:
-  service_identifier: process-exporter
-  source_url: https://github.com/ncabatoff/process-exporter/releases/download
-  file_extension: tar.gz
-  ports:
-    web_listen_address: 9256
-
-# Node Exporter
+# ====================================================================
+# Role: Node Exporter
+# ====================================================================
 node_exporter:
   service_identifier: node-exporter
   source_url: https://github.com/prometheus/node_exporter/releases/download
@@ -53,8 +13,54 @@ node_exporter:
   ports:
     web_listen_address: 9100
 
+# ====================================================================
+# Role: Process Exporter
+# ====================================================================
+process_exporter:
+  service_identifier: process-exporter
+  source_url: https://github.com/ncabatoff/process-exporter/releases/download
+  file_extension: tar.gz
+  ports:
+    web_listen_address: 9256
+
+# ====================================================================
+# Role: Promtail
+# ====================================================================
+promtail:
+  service_identifier: promtail
+  source_url: https://github.com/grafana/loki/releases/download
+  file_extension: zip
+  ports:
+    http_listen_port: 9080
+
+# ====================================================================
+# Role: Setup
+# ====================================================================
+swap:
+  size_gb: 32
+  file_path: /swapfile
+  swappiness_value: 10
+
+login_users:
+  ansible: ansible
+  devops: devops
+
+# ====================================================================
+# Role: Security
+# ====================================================================
 auditd:
   service_identifier: auditd
 
 fail2ban:
   service_identifier: fail2ban
+
+mail:
+  to: team@encapsulate.xyz
+  from: bot@encapsulate.xyz
+  smtp_server: smtp.gmail.com
+  port: 587
+
+ssh:
+  service_identifier: ssh
+  ports:
+    login: 22
