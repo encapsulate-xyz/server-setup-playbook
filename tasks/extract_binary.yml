@@ -1,7 +1,7 @@
 ---
 - name: Download and unarchive the binary
   ansible.builtin.unarchive:
-    src: "{{ source_url }}/{{ default_binary_name }}-{{ version }}.{{ system_arch }}.{{ file_extension }}"
+    src: "{{ source_url }}/{{ suffix_url }}"
     dest: "{{ tmp_dir }}"
     remote_src: true
     owner: root
@@ -10,7 +10,7 @@
 
 - name: Copy the binary file
   ansible.builtin.copy:
-    src: "{{ tmp_dir }}/{{ default_binary_name }}-{{ version }}.{{ system_arch }}/{{ default_binary_name }}"
+    src: "{{ tmp_dir }}/{{ extracted_binary_path }}"
     dest: "{{ binary_dest_path }}"
     remote_src: true
     owner: root
