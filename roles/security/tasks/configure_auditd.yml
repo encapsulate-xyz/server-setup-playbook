@@ -16,7 +16,7 @@
 - name: Copy audit.rules service file
   ansible.builtin.copy:
     src: audit.rules
-    dest: '"{{ security_auditd.rules_path }}"'
+    dest: "{{ security_auditd.rules_path }}"
     owner: root
     group: root
     mode: "0644"
