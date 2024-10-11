@@ -47,7 +47,7 @@ process_exporter:
 
 # Node Exporter
 node_exporter:
-  service_identifier: node_exporter
+  service_identifier: node-exporter
   source_url: https://github.com/prometheus/node_exporter/releases/download
   file_extension: tar.gz
   ports:
