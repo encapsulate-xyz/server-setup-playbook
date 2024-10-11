@@ -21,7 +21,6 @@
     binary_dest_path: "{{ node_exporter_bin_dir }}/{{ service_identifier }}"
     extracted_binary_path: "{{ node_exporter_default_binary_name }}-{{ node_exporter.version }}.{{ system_arch }}/{{ node_exporter_default_binary_name }}"
     default_binary_name: "{{ node_exporter_default_binary_name }}"
-    file_extension: "{{ node_exporter.file_extension }}"
     version: "{{ node_exporter.version }}"
 
 - name: Create systemd unit file for node exporter
