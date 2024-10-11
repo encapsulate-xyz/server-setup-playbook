@@ -39,5 +39,5 @@ node_exporter:
   service_identifier: node-exporter
   source_url: https://github.com/prometheus/node_exporter/releases/download
   file_extension: tar.gz
-  port:
+  ports:
     web_listen_address: 9100

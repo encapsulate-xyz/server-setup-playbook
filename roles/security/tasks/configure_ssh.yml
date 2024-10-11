@@ -25,7 +25,7 @@
   community.general.ufw:
     rule: allow
     from_ip: "{{ monitor_server_ip }}"
-    to_port: "{{ node_exporter.port.web_listen_address }}"
+    to_port: "{{ node_exporter.ports.web_listen_address }}"
     proto: tcp
     comment: Allow traffic from Monitor Server to Node Exporter
 
