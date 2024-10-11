@@ -17,10 +17,10 @@
   ansible.builtin.include_tasks: tasks/extract_binary.yml
   vars:
     source_url: "{{ node_exporter.source_url }}/v{{ node_exporter.version }}"
+    archive_name: "{{ node_exporter_default_binary_name }}-{{ node_exporter.version }}.{{ system_arch }}"
+    binary_src_path: "{{ node_exporter_default_binary_name }}-{{ node_exporter.version }}.{{ system_arch }}/{{ node_exporter_default_binary_name }}"
     binary_dest_path: "{{ node_exporter_bin_dir }}/{{ service_identifier }}"
-    default_binary_name: "{{ node_exporter_default_binary_name }}"
     file_extension: "{{ node_exporter.file_extension }}"
-    version: "{{ node_exporter.version }}"
 
 - name: Create systemd unit file for node exporter
   ansible.builtin.template:

@@ -1,52 +1,24 @@
 ---
 - name: Download and unarchive the binary
   ansible.builtin.unarchive:
-    src: "{{ source_url }}/{{ default_binary_name }}-{{ version }}.{{ system_arch }}.{{ file_extension }}"
+    src: "{{ source_url }}/{{ archive_name }}.{{ file_extension }}"
     dest: "{{ tmp_dir }}"
     remote_src: true
-    owner: "{{ service_identifier }}"
-    group: "{{ service_identifier }}"
+    owner: root
+    group: root
     mode: "0755"
-  register: download_result
-  ignore_errors: true
-
-- name: Attempt download from alternate URL if first fails
-  ansible.builtin.unarchive:
-    src: "{{ source_url }}"
-    dest: "{{ tmp_dir }}"
-    remote_src: true
-    owner: "{{ service_identifier }}"
-    group: "{{ service_identifier }}"
-    mode: "0755"
-  when: download_result is failed
 
 - name: Copy the binary file
   ansible.builtin.copy:
-    src: "{{ tmp_dir }}/{{ default_binary_name }}-{{ version }}.{{ system_arch }}/{{ default_binary_name }}"
+    src: "{{ tmp_dir }}/{{ binary_src_path }}"
     dest: "{{ binary_dest_path }}"
     remote_src: true
-    owner: "{{ service_identifier }}"
-    group: "{{ service_identifier }}"
+    owner: root
+    group: root
     force: true
     mode: "0755"
-  register: binary_result
-  ignore_errors: true
-
-- name: Copy the binary file
-  ansible.builtin.copy:
-    src: "{{ tmp_dir }}/{{ default_binary_name }}-{{ system_arch }}"
-    dest: "{{ binary_dest_path }}"
-    remote_src: true
-    owner: "{{ service_identifier }}"
-    group: "{{ service_identifier }}"
-    force: true
-    mode: "0755"
-  when: binary_result is failed
 
 - name: Clean up the temporary files in /tmp
   ansible.builtin.file:
-    path: "{{ item }}"
+    path: "{{ tmp_dir }}/{{ binary_src_path }}"
     state: absent
-  loop:
-    - "{{ tmp_dir }}/{{ default_binary_name }}-{{ version }}.{{ system_arch }}"
-    - "{{ tmp_dir }}/{{ default_binary_name }}-{{ system_arch }}"
