@@ -11,11 +11,6 @@
       - audispd-plugins
       - logrotate
 
-- name: Remove default auditd rules
-  ansible.builtin.file:
-    path: "{{ security_auditd.rules_path }}"
-    state: absent
-
 - name: Copy audit.rules service file
   ansible.builtin.copy:
     src: audit.rules
@@ -23,6 +18,7 @@
     owner: root
     group: root
     mode: "0644"
+    force: true
   notify:
     - Reload service
     - Restart service

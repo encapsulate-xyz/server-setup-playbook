@@ -12,7 +12,7 @@
 - name: Enable firewall
   community.general.ufw:
     state: enabled
-    logging: true
+    logging: "medium"
 
 - name: Open ssh port
   community.general.ufw:

@@ -2,9 +2,8 @@
 process_exporter_home_dir: /opt/{{ service_identifier }}
 
 process_exporter_bin_dir: "{{ process_exporter_home_dir }}/bin"
-process_exporter_log_dir: "{{ process_exporter_home_dir }}/log"
-
 process_exporter_config_dir: "{{ process_exporter_home_dir }}/config"
+process_exporter_log_dir: "{{ process_exporter_home_dir }}/log"
 
 process_exporter_directories:
   - "{{ process_exporter_home_dir }}"
@@ -12,6 +11,7 @@ process_exporter_directories:
   - "{{ process_exporter_config_dir }}"
   - "{{ process_exporter_log_dir }}"
 
+process_exporter_config_file_path: "{{ process_exporter_config_dir }}/{{ process_exporter_config_file_name }}"
 process_exporter_log_file_path: "{{ process_exporter_log_dir }}/{{ service_identifier }}.log"
 
 process_exporter_binary_unarchive_dir: /tmp

@@ -11,7 +11,6 @@ login_users:
 ssh:
   ports:
     login: 22
-  login_port: 22
 
 monitor_server_dns: monitor.encapsulate.xyz
 

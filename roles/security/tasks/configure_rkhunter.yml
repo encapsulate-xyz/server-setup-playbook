@@ -7,7 +7,7 @@
 
 - name: Copy rkhunter's default config file
   ansible.builtin.copy:
-    src: "{{ security_rkhunter.old_config_file }}"
+    src: "{{ security_rkhunter.default_config_file }}"
     dest: "{{ security_rkhunter.config_file }}"
     remote_src: true
     mode: "0644"

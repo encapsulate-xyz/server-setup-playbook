@@ -7,7 +7,7 @@ Type=simple
 User={{ service_identifier }}
 Group={{ service_identifier }}
 ExecStart={{ process_exporter_bin_dir }}/process-exporter \
-    -config.path {{ process_exporter_config_dir }}/process-exporter.yml \
+    -config.path {{ process_exporter_config_dir }}/{{ process_exporter_config_file_path }} \
     --web.listen-address=:{{ process_exporter_port }}
 Restart=always
 RestartSec=4
