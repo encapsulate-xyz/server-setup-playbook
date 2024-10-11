@@ -16,13 +16,11 @@
 - name: Include Download, Unarchive and Copy Binary task
   ansible.builtin.include_tasks: tasks/extract_binary.yml
   vars:
-    download_url: "{{ promtail_url }}"
-    download_dest: "{{ promtail_binary_archive_file_name }}"
-    archive_src: "{{ promtail_binary_archive_file_name }}"
-    unarchive_dest: "{{ promtail_binary_unarchive_dir }}"
-    binary_src: "{{ promtail_binary_file }}"
-    binary_dest: "{{ promtail_bin_dir }}/promtail"
-    user: "{{ service_identifier }}"
+    source_url: "{{ promtail.source_url }}"
+    binary_dest_path: "{{ promtail_bin_dir }}/{{ service_identifier }}"
+    default_binary_name: "{{ promtail_default_binary_name }}"
+    file_extension: "{{ promtail.file_extension }}"
+    version: "{{ promtail.version }}"
 
 - name: Copy promtail config
   ansible.builtin.template:
@@ -31,6 +29,9 @@
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
     mode: "0644"
+  notify:
+    - Reload service
+    - Restart service
 
 - name: Copy promtail service file
   ansible.builtin.template:

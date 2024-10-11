@@ -4,7 +4,7 @@
     name: "{{ item }}"
     state: present
     update_cache: true
-  loop: 
+  loop:
     - msmtp
     - msmtp-mta
     - mailutils

@@ -33,7 +33,7 @@
   community.general.ufw:
     rule: allow
     from_ip: "{{ monitor_server_ip }}"
-    to_port: "{{ process_exporter_port }}"
+    to_port: "{{ process_exporter.ports.web_listen_address }}"
     proto: tcp
     comment: Allow traffic from Monitor Server to Process Exporter
 

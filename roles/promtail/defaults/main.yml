@@ -12,7 +12,4 @@ promtail_directories:
   - "{{ promtail_log_dir }}"
 
 promtail_log_file_path: "{{ promtail_log_dir }}/{{ service_identifier }}.log"
-
-promtail_binary_unarchive_dir: /tmp
-promtail_binary_archive_file_name: "{{ promtail_binary_unarchive_dir }}/promtail-linux-amd64.zip"
-promtail_binary_file: "{{ promtail_binary_unarchive_dir }}/promtail-linux-amd64"
+promtail_config_file_path: "{{ promtail_config_dir }}/{{ promtail_config_file_name }}"

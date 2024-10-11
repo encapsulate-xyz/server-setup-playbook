@@ -1,11 +1,12 @@
 ---
 # Promtail
-promtail_version: 3.0.1
-promtail_url: https://github.com/grafana/loki/releases/download/v{{ promtail_version }}/promtail-linux-amd64.zip
+promtail:
+  version: 3.0.1
 
 # Process Exporter
-process_exporter_version: 0.8.2
-process_exporter_url: https://github.com/ncabatoff/process-exporter/releases/download/v{{ process_exporter_version }}/process-exporter-{{ process_exporter_version}}.linux-amd64.tar.gz
+process_exporter:
+  version: 0.8.2
 
+# Node Exporter
 node_exporter:
   version: 1.8.2

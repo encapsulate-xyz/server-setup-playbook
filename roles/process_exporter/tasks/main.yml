@@ -16,21 +16,22 @@
 - name: Include Download, Unarchive and Copy Binary task
   ansible.builtin.include_tasks: tasks/extract_binary.yml
   vars:
-    download_url: "{{ process_exporter_url }}"
-    download_dest: "{{ process_exporter_binary_archive_file_name }}"
-    archive_src: "{{ process_exporter_binary_archive_file_name }}"
-    unarchive_dest: "{{ process_exporter_binary_unarchive_dir }}"
-    binary_src: "{{ process_exporter_binary_file }}"
-    binary_dest: "{{ process_exporter_bin_dir }}"
-    user: "{{ service_identifier }}"
+    source_url: "{{ process_exporter.source_url }}/v{{ process_exporter.version }}"
+    binary_dest_path: "{{ process_exporter_bin_dir }}/{{ service_identifier }}"
+    default_binary_name: "{{ process_exporter_default_binary_name }}"
+    file_extension: "{{ process_exporter.file_extension }}"
+    version: "{{ process_exporter.version }}"
 
 - name: Copy process-exporter config
   ansible.builtin.copy:
     src: process-exporter.yml
-    dest: "{{ process_exporter_config_dir }}/process-exporter.yml"
+    dest: "{{ process_exporter_config_file_path }}"
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
     mode: "0644"
+  notify:
+    - Reload service
+    - Restart service
 
 - name: Create process-exporter systemd unit
   ansible.builtin.template:

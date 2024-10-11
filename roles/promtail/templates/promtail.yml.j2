@@ -1,5 +1,5 @@
 server:
-  http_listen_port: {{ promtail_port }}
+  http_listen_port: {{ promtail.ports.http_listen_port }}
   grpc_listen_port: 0
 
 positions:
@@ -26,6 +26,15 @@ scrape_configs:
           job: authlogs
           host: {{ ansible_hostname }}
           __path__: /var/log/auth.log
+  
+  - job_name: ufwlogs
+    static_configs:
+      - targets:
+        - localhost
+        labels:
+          job: ufwlogs
+          host: {{ ansible_hostname }}
+          __path__: /var/log/ufw.log
 
   - job_name: fail2banlogs
     static_configs:
