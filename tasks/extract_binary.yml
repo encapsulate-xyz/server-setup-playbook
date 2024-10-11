@@ -20,5 +20,5 @@
 
 - name: Clean up the temporary files in /tmp
   ansible.builtin.file:
-    path: "{{ tmp_dir }}/{{ default_binary_name }}-{{ version }}.{{ system_arch }}"
+    path: "{{ tmp_dir }}/{{ extracted_binary_path }}"
     state: absent

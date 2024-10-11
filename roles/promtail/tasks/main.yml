@@ -20,8 +20,6 @@
     suffix_url: "{{ promtail_default_binary_name }}.{{ promtail.file_extension }}"
     binary_dest_path: "{{ promtail_bin_dir }}/{{ service_identifier }}"
     extracted_binary_path: "{{ promtail_default_binary_name }}"
-    default_binary_name: "{{ promtail_default_binary_name }}"
-    version: "{{ promtail.version }}"
 
 - name: Copy promtail config
   ansible.builtin.template:
