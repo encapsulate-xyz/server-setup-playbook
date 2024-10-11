@@ -28,7 +28,7 @@
   loop:
     - { regexp: ^UPDATE_MIRRORS, line: UPDATE_MIRRORS=1 }
     - { regexp: ^MIRRORS_MODE, line: MIRRORS_MODE=0 }
-    - { regexp: ^MAIL-ON-WARNING, line: "MAIL-ON-WARNING={{ mail_to }}" }
+    - { regexp: ^MAIL-ON-WARNING, line: "MAIL-ON-WARNING={{ mail.to }}" }
     - { regexp: ^COPY_LOG_ON_ERROR, line: COPY_LOG_ON_ERROR=1 }
     - { regexp: ^PHALANX2_DIRTEST, line: PHALANX2_DIRTEST=1 }
     - { regexp: ^WEB_CMD, line: WEB_CMD="" }
