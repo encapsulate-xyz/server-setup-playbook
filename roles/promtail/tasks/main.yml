@@ -18,7 +18,7 @@
   vars:
     source_url: "{{ promtail.source_url }}/v{{ promtail.version }}"
     archive_name: "{{ promtail_default_binary_name }}"
-    binary_src_path: "{{ default_binary_name }}"
+    binary_src_path: "{{ promtail_default_binary_name }}"
     binary_dest_path: "{{ promtail_bin_dir }}/{{ service_identifier }}"
     file_extension: "{{ promtail.file_extension }}"
 
