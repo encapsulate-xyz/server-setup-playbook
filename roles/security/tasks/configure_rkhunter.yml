@@ -17,7 +17,7 @@
     path: "{{ security_rkhunter.log_dir }}"
     state: directory
     owner: root
-    group: adm
+    group: root
     mode: "0755"
 
 - name: Configure rkhunter general settings
