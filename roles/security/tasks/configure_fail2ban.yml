@@ -1,0 +1,29 @@
+---
+- name: Set service identifier
+  ansible.builtin.set_fact:
+    service_identifier: "{{ fail2ban.service_identifier }}"
+
+- name: Install fail2ban
+  ansible.builtin.apt:
+    name: fail2ban
+    state: present
+    update_cache: true
+
+- name: Configure ssh jail
+  ansible.builtin.blockinfile:
+    path: "{{ security_fail2ban.config_file }}"
+    block: |
+      [sshd]
+      enabled = true
+      banaction = ufw
+      port = {{ ssh.ports.login | default('ssh') }}
+      filter = sshd
+      logpath = {{ security_fail2ban.log_file }}
+      maxretry = 5
+      findtime = 86400
+      bantime  = -1
+    create: true
+    mode: "0644"
+  notify:
+    - Reload service
+    - Restart service

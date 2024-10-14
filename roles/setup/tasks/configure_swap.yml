@@ -1,0 +1,128 @@
+---
+# ====================================================================
+# Group 1: Check if Swap is Configured
+# ====================================================================
+- name: Check if swap is configured
+  ansible.builtin.command: swapon --show
+  register: current_swap_output
+  ignore_errors: true
+  changed_when: false
+
+- name: Skip to configuration if no swap is configured
+  ansible.builtin.debug:
+    msg: No swap is currently configured, proceeding to configure swap.
+  when: current_swap_output.stdout == ""
+
+# ====================================================================
+# Group 2: If Swap is Configured, Check the Size and Type
+# ====================================================================
+- name: Extract swap details from swapon --show
+  ansible.builtin.shell: |
+    set -o pipefail
+    swapon --show --noheadings | awk '{print $1, $2, $3}'
+  args:
+    executable: /bin/bash
+  register: swap_details
+  when: current_swap_output.stdout != ""
+  changed_when: false
+
+- name: Extract swap size in GB and type (file or partition)
+  ansible.builtin.set_fact:
+    current_swap_size: "{{ swap_details.stdout.split()[2] }}"
+    current_swap_type: "{{ swap_details.stdout.split()[1] }}"
+    current_swap_path: "{{ swap_details.stdout.split()[0] }}"
+  when: current_swap_output.stdout != ""
+
+- name: Skip the rest of the playbook if swap size is 32GB
+  ansible.builtin.meta: end_play
+  when: current_swap_output.stdout != "" and current_swap_size == '32G'
+
+# ====================================================================
+# Group 3: Remove Existing Swap if Size is Not 32GB and Type is File
+# ====================================================================
+- name: Remove existing swap file if type is file and size is not 32GB
+  block:
+    - name: Disable swap if active
+      ansible.builtin.command: swapoff {{ current_swap_path }}
+      when: current_swap_output.stdout != "" and current_swap_size != '32G'
+      changed_when: false
+
+    - name: Remove swap entry from /etc/fstab
+      ansible.builtin.replace:
+        path: /etc/fstab
+        regexp: ^(.*\s+swap\s+.*)$
+        replace: "# \\1"
+      when: current_swap_output.stdout != "" and current_swap_size != '32G'
+
+    - name: Remove swap file if it is a file
+      ansible.builtin.file:
+        path: "{{ current_swap_path }}"
+        state: absent
+      when: current_swap_output.stdout != "" and current_swap_type == 'file'
+
+# ====================================================================
+# Group 4: Configure New 32GB Swap
+# ====================================================================
+- name: Configure new 32GB swap
+  block:
+    - name: Create a new 32GB swap file
+      ansible.builtin.command: fallocate -l {{ swap.size_gb }}G {{ swap.file_path }}
+      changed_when: false
+
+    - name: Set permissions on the swap file
+      ansible.builtin.file:
+        path: "{{ swap.file_path }}"
+        owner: root
+        group: root
+        mode: "0600"
+
+    - name: Format the new swap file
+      ansible.builtin.command: mkswap {{ swap.file_path }}
+      changed_when: false
+
+    - name: Enable the new swap file
+      ansible.builtin.command: swapon {{ swap.file_path }}
+      changed_when: false
+
+    - name: Add the new swap file entry to /etc/fstab
+      ansible.builtin.lineinfile:
+        path: /etc/fstab
+        line: "{{ swap.file_path }} none swap sw 0 0"
+        state: present
+
+# ====================================================================
+# Group 5: Manage Swappiness Settings
+# ====================================================================
+- name: Manage system swappiness settings
+  block:
+    - name: Get current swappiness value
+      ansible.builtin.command: cat /proc/sys/vm/swappiness
+      register: current_swappiness
+      changed_when: false
+
+    - name: Set desired swappiness value
+      ansible.posix.sysctl:
+        name: vm.swappiness
+        value: "{{ swap.swappiness_value }}"
+        state: present
+      when: current_swappiness.stdout | int != swap.swappiness_value
+
+    - name: Ensure swappiness is configured in sysctl.conf
+      ansible.builtin.lineinfile:
+        path: /etc/sysctl.conf
+        line: vm.swappiness={{ swap.swappiness_value }}
+        state: present
+
+# ====================================================================
+# Group 6: Verify Swap Configuration
+# ====================================================================
+- name: Verify swap configuration
+  block:
+    - name: Verify the new swap is active
+      ansible.builtin.command: swapon --show
+      register: swap_status
+      changed_when: false
+
+    - name: Show swap status
+      ansible.builtin.debug:
+        msg: "{{ swap_status.stdout }}"

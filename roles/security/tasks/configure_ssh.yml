@@ -1,0 +1,58 @@
+---
+- name: Set service identifier
+  ansible.builtin.set_fact:
+    service_identifier: "{{ ssh.service_identifier }}"
+
+- name: Install ufw
+  ansible.builtin.apt:
+    name: ufw
+    state: present
+    update_cache: true
+
+- name: Enable firewall
+  community.general.ufw:
+    state: enabled
+    logging: medium
+
+- name: Open ssh port
+  community.general.ufw:
+    rule: limit
+    port: "{{ ssh.ports.login }}"
+    proto: tcp
+    comment: Allow SSH
+
+- name: Allow traffic from Monitor Server to Node Exporter
+  community.general.ufw:
+    rule: allow
+    from_ip: "{{ monitor_server_ip }}"
+    to_port: "{{ node_exporter.ports.web_listen_address }}"
+    proto: tcp
+    comment: Allow traffic from Monitor Server to Node Exporter
+
+- name: Allow traffic from Monitor Server to Process Exporter
+  community.general.ufw:
+    rule: allow
+    from_ip: "{{ monitor_server_ip }}"
+    to_port: "{{ process_exporter.ports.web_listen_address }}"
+    proto: tcp
+    comment: Allow traffic from Monitor Server to Process Exporter
+
+- name: Disable root login over SSH
+  ansible.builtin.lineinfile:
+    dest: "{{ security_ssh.config_file }}"
+    regexp: ^PermitRootLogin
+    line: PermitRootLogin no
+    state: present
+  notify:
+    - Reload service
+    - Restart service
+
+- name: Disable password login
+  ansible.builtin.lineinfile:
+    dest: "{{ security_ssh.config_file }}"
+    regexp: ^PasswordAuthentication
+    line: PasswordAuthentication no
+    state: present
+  notify:
+    - Reload service
+    - Restart service

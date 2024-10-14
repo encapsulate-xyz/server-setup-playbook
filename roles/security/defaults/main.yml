@@ -1,0 +1,44 @@
+---
+# Auditd
+security_auditd:
+  rules_path: /etc/audit/rules.d/audit.rules
+
+# Fail2Ban
+security_fail2ban:
+  config_file: /etc/fail2ban/jail.d/ssh.local
+  log_file: /var/log/auth.log
+
+# Logrotate
+security_logrotate:
+  auditd_config_file: /etc/logrotate.d/audit_logs
+  auditd_logs_path: /var/log/audit/*.log
+  mailroot_config_file: /etc/logrotate.d/mailroot
+  mailroot_logs_path: /var/spool/mail/root /var/mail/root
+  msmtp_config_file: /etc/logrotate.d/msmtp
+  msmtp_logs_path: /var/log/msmtp
+  rkhunter_config_file: /etc/logrotate.d/rkhunter
+  rkhunter_logs_path: /var/log/rkhunter/*
+
+# msmtp
+security_msmtp:
+  config_file: /etc/msmtprc
+  log_file: /var/log/msmtp
+  alias_file: /etc/aliases
+  default_mail_config: /etc/mail.rc
+
+# rkhunter
+security_rkhunter:
+  default_config_file: /etc/rkhunter.conf
+  config_file: /etc/rkhunter.conf.local
+  log_dir: /var/log/rkhunter
+  cron_config_file: /etc/default/rkhunter
+  etc_cron_config_file: /etc/cron.daily/rkhunter
+  usr_cron_config_file: /usr/local/bin/rkhunter-cron
+
+# ssh
+security_ssh:
+  config_file: /etc/ssh/sshd_config
+
+# sudoers
+security_sudoers:
+  config_file: /etc/sudoers

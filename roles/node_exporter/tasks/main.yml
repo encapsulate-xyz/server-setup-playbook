@@ -1,0 +1,33 @@
+---
+- name: Include create user task
+  ansible.builtin.include_tasks: tasks/create_user.yml
+  vars:
+    user_name: "{{ service_identifier }}"
+    allow_passwordless_sudo: true
+    home: "{{ node_exporter_home_dir }}"
+
+- name: Include create directories task
+  ansible.builtin.include_tasks: tasks/create_directories.yml
+  vars:
+    user: "{{ service_identifier }}"
+    directories: "{{ node_exporter_directories }}"
+    log_file_path: "{{ node_exporter_log_file_path }}"
+
+- name: Include Download, Unarchive and Copy Binary task
+  ansible.builtin.include_tasks: tasks/extract_binary.yml
+  vars:
+    source_url: "{{ node_exporter.source_url }}/v{{ node_exporter.version }}"
+    suffix_url: "{{ node_exporter_default_binary_name }}-{{ node_exporter.version }}.{{ system_arch }}.{{ node_exporter.file_extension }}"
+    binary_dest_path: "{{ node_exporter_bin_dir }}/{{ service_identifier }}"
+    extracted_binary_path: "{{ node_exporter_extracted_binary_dir }}/{{ node_exporter_default_binary_name }}"
+
+- name: Create systemd unit file for node exporter
+  ansible.builtin.template:
+    src: node_exporter.service.j2
+    dest: /etc/systemd/system/{{ service_identifier }}.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload service
+    - Restart service

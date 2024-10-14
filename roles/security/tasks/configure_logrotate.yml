@@ -1,0 +1,13 @@
+---
+- name: Create logrotate configurations for audit mail msmtp rkhunter logs
+  ansible.builtin.template:
+    src: logrotate.j2
+    dest: "{{ item.config_file }}"
+    mode: "0644"
+  loop:
+    - { config_file: "{{ security_logrotate.auditd_config_file }}", log_path: "{{ security_logrotate.auditd_logs_path }}" }
+    - { config_file: "{{ security_logrotate.mailroot_config_file }}", log_path: "{{ security_logrotate.mailroot_logs_path }}" }
+    - { config_file: "{{ security_logrotate.msmtp_config_file }}", log_path: "{{ security_logrotate.msmtp_logs_path }}" }
+    - { config_file: "{{ security_logrotate.rkhunter_config_file }}", log_path: "{{ security_logrotate.rkhunter_logs_path }}" }
+  vars:
+    log_path: "{{ item.log_path }}"

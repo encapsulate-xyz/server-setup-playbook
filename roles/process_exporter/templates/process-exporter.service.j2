@@ -1,0 +1,21 @@
+[Unit]
+Description=Process Exporter service
+After=network.target
+
+[Service]
+Type=simple
+User={{ service_identifier }}
+Group={{ service_identifier }}
+WorkingDirectory={{ process_exporter_home_dir }}
+ExecStart={{ process_exporter_bin_dir }}/{{ service_identifier }} \
+    -config.path {{ process_exporter_config_file_path }} \
+    --web.listen-address=:{{ process_exporter.ports.web_listen_address }}
+Restart=always
+RestartSec=4
+LimitNOFILE=65536
+StandardOutput=append:{{ process_exporter_log_file_path }}
+StandardError=inherit
+
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,26 @@
+---
+- name: Set service identifier as auditd
+  ansible.builtin.set_fact:
+    service_identifier: "{{ auditd.service_identifier }}"
+
+- name: Install Auditd
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  loop:
+    - auditd
+    - audispd-plugins
+    - logrotate
+
+- name: Copy audit.rules service file
+  ansible.builtin.copy:
+    src: audit.rules
+    dest: "{{ security_auditd.rules_path }}"
+    owner: root
+    group: root
+    mode: "0644"
+    force: true
+  notify:
+    - Reload service
+    - Restart service

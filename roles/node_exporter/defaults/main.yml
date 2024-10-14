@@ -1,0 +1,15 @@
+---
+node_exporter_home_dir: /opt/{{ service_identifier }}
+
+node_exporter_bin_dir: "{{ node_exporter_home_dir }}/bin"
+node_exporter_log_dir: "{{ node_exporter_home_dir }}/log"
+node_exporter_config_dir: "{{ node_exporter_home_dir }}/config"
+
+node_exporter_directories:
+  - "{{ node_exporter_home_dir }}"
+  - "{{ node_exporter_bin_dir }}"
+  - "{{ node_exporter_config_dir }}"
+  - "{{ node_exporter_log_dir }}"
+
+node_exporter_log_file_path: "{{ node_exporter_log_dir }}/{{ service_identifier }}.log"
+node_exporter_extracted_binary_dir: "{{ node_exporter_default_binary_name }}-{{ node_exporter.version }}.{{ system_arch }}"

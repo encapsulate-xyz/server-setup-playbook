@@ -1,0 +1,12 @@
+---
+- name: Add email notification settings to sudoers
+  ansible.builtin.lineinfile:
+    path: "{{ security_sudoers.config_file }}"
+    state: present
+    line: "{{ item }}"
+    validate: /usr/sbin/visudo -cf %s
+  loop:
+    - Defaults mail_always
+    - Defaults mailto="{{ mail.to }}"
+    - Defaults mailerpath=/usr/sbin/sendmail
+    - Defaults:ansible !mail_always

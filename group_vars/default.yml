@@ -1,0 +1,9 @@
+---
+node_exporter:
+  version: 1.8.2
+
+process_exporter:
+  version: 0.8.2
+
+promtail:
+  version: 3.0.1
