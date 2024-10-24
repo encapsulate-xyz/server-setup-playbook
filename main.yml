@@ -1,22 +1,18 @@
 ---
-- name: Server Setup
-  hosts: all
-  become: true
-  gather_facts: true
-  vars_files:
-    - group_vars/all.yml
-    - group_vars/vault.yml
-  pre_tasks:
-    - name: Resolve IP address from DNS using getent
-      ansible.builtin.command: getent ahosts {{ monitor_server_dns }}
-      register: dns_result
-      changed_when: false
+- name: Import setup_server playbook
+  ansible.builtin.import_playbook: setup_server.yml
 
-    - name: Extract IP address
-      ansible.builtin.set_fact:
-        monitor_server_ip: "{{ dns_result.stdout.split()[0] }}"
-      changed_when: false
-  roles:
-    - common
-    - setup
-    - security
+- name: Import setup_security playbook
+  ansible.builtin.import_playbook: setup_security.yml
+
+- name: Import promtail playbook
+  ansible.builtin.import_playbook: promtail.yml
+
+- name: Import node_exporter playbook
+  ansible.builtin.import_playbook: node_exporter.yml
+
+- name: Import process_exporter playbook
+  ansible.builtin.import_playbook: process_exporter.yml
+
+- name: Import setup_swap playbook
+  ansible.builtin.import_playbook: setup_swap.yml
