@@ -16,6 +16,7 @@
 - name: Include Download, Unarchive and Copy Binary task
   ansible.builtin.include_tasks: tasks/extract_binary.yml
   vars:
+    node_exporter_extracted_binary_dir: "{{ node_exporter_default_binary_name }}-{{ node_exporter.version }}.{{ system_arch }}"
     source_url: "{{ node_exporter.source_url }}/v{{ node_exporter.version }}"
     suffix_url: "{{ node_exporter_default_binary_name }}-{{ node_exporter.version }}.{{ system_arch }}.{{ node_exporter.file_extension }}"
     binary_dest_path: "{{ node_exporter_bin_dir }}/{{ service_identifier }}"
