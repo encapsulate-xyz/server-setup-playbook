@@ -39,20 +39,36 @@
 
 - name: Disable root login over SSH
   ansible.builtin.lineinfile:
-    dest: "{{ security_ssh.config_file }}"
+    dest: "{{ security_ssh.sshd_config_file_path }}"
     regexp: ^PermitRootLogin
     line: PermitRootLogin no
     state: present
   notify:
-    - Reload service
     - Restart service
 
 - name: Disable password login
   ansible.builtin.lineinfile:
-    dest: "{{ security_ssh.config_file }}"
+    dest: "{{ security_ssh.sshd_config_file_path }}"
     regexp: ^PasswordAuthentication
     line: PasswordAuthentication no
     state: present
   notify:
-    - Reload service
+    - Restart service
+
+- name: Copy vault.pub to trusted CA path
+  ansible.builtin.copy:
+    src: vault.pub
+    dest: "{{ security_ssh.trusted_ca_file_path }}"
+    owner: root
+    group: root
+    mode: "0644"
+
+# Configure SSH to use vault.pub as the Trusted User CA key
+- name: Configure SSH for Trusted User CA
+  ansible.builtin.lineinfile:
+    path: "{{ security_ssh.sshd_config_file_path }}"
+    regexp: ^TrustedUserCAKeys
+    line: TrustedUserCAKeys {{ security_ssh.trusted_ca_file_path }}
+    state: present
+  notify:
     - Restart service

@@ -4,7 +4,7 @@
   vars:
     shell: /bin/bash
     is_system_user: false
-    user_name: "{{ login_users.ansible }}"
+    user_name: "{{ setup.login_users.ansible }}"
     allow_passwordless_sudo: true
 
 - name: Include create user task for devops user
@@ -12,14 +12,11 @@
   vars:
     shell: /bin/bash
     is_system_user: false
-    user_name: "{{ login_users.devops }}"
+    user_name: "{{ setup.login_users.devops }}"
     user_groups: [adm, systemd-journal]
 
-- name: Add authorized keys for ansible and devops
+- name: Add authorized key for ansible user
   ansible.posix.authorized_key:
-    user: "{{ item.user }}"
-    key: "{{ lookup('file', playbook_dir + '/keys/' + item.key) }}"
+    user: "{{ setup.login_users.ansible }}"
+    key: "{{ lookup('file', 'ansible.pub') }}"
     exclusive: true
-  loop:
-    - { user: "{{ login_users.ansible }}", key: "{{ login_users.ansible }}.pub" }
-    - { user: "{{ login_users.devops }}", key: "{{ login_users.devops }}.pub" }

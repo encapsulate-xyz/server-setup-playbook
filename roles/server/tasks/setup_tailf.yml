@@ -1,0 +1,16 @@
+---
+- name: Create tailf wrapper script
+  ansible.builtin.copy:
+    src: tailf.sh
+    dest: "{{ server_tailf_wrapper_script_bin_path }}"
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Create completion script for tailf
+  ansible.builtin.template:
+    src: tailf_autocomplete.sh.j2
+    dest: "{{ server_tailf_autocomplete_script_file_path }}"
+    owner: root
+    group: root
+    mode: "0644"

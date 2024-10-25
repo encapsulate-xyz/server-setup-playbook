@@ -1,0 +1,2 @@
+---
+security_ssh_trusted_ca_file_name: trusted-ca.pem

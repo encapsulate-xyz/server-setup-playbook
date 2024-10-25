@@ -1,0 +1,16 @@
+_tailf_complete() {
+    local cur files
+
+    # Get the current word the user is typing
+    cur="${COMP_WORDS[COMP_CWORD]}"
+
+    # Find all log files in /opt and extract only filenames
+    files=$(find /opt/ -type f -path "*/log/*.log" -exec basename {} \; 2>/dev/null)
+
+    # Use COMPREPLY to suggest the filenames only
+    COMPREPLY=( $(compgen -W "$files" -- "$cur") )
+}
+
+# Register the function for both tailf and /usr/local/bin/tailf
+complete -F _tailf_complete {{ server_tailf_wrapper_script_file_name }}
+complete -F _tailf_complete {{ server_tailf_wrapper_script_bin_path }}

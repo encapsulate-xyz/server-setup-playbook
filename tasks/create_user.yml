@@ -9,7 +9,7 @@
     home: "{{ home | default(omit) }}"
     state: present
 
-- name: Allow sudo for user
+- name: Allow passwordless sudo for user
   ansible.builtin.copy:
     content: "{{ user_name }} ALL=(ALL) NOPASSWD: ALL"
     dest: /etc/sudoers.d/{{ user_name }}

@@ -17,4 +17,5 @@
         monitor_server_ip: "{{ dns_result.stdout.split()[0] }}"
       changed_when: false
   roles:
+    - common
     - security
