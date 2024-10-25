@@ -37,7 +37,8 @@ security_rkhunter:
 
 # ssh
 security_ssh:
-  config_file: /etc/ssh/sshd_config
+  sshd_config_file_path: /etc/ssh/sshd_config
+  trusted_ca_file_path: /etc/ssh/{{ security_ssh_trusted_ca_file_name }}
 
 # sudoers
 security_sudoers:
