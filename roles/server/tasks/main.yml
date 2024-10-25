@@ -17,7 +17,7 @@
     - unzip
 
 - name: Create Users
-  ansible.builtin.include_tasks: create_users.yml
+  ansible.builtin.include_tasks: setup_login_users.yml
 
 - name: Setup tailf
   ansible.builtin.include_tasks: create_tailf.yml
