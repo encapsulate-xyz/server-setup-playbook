@@ -1,19 +1,23 @@
 ---
-- name: Install essential packages
+- name: Install apt packages
   ansible.builtin.apt:
     name: "{{ item }}"
     state: present
     update_cache: true
+    cache_valid_time: 3600
   loop:
+    - make
     - build-essential
-    - cargo
+    - gcc
+    - git
+    - jq
+    - chrony
+    - lz4
+    - yq
     - unzip
 
 - name: Create Users
   ansible.builtin.include_tasks: create_users.yml
-
-- name: Configure SWAP
-  ansible.builtin.include_tasks: configure_swap.yml
 
 - name: Setup tailf
   ansible.builtin.include_tasks: create_tailf.yml

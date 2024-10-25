@@ -1,0 +1,9 @@
+---
+- name: Setup Swap
+  hosts: all
+  become: true
+  gather_facts: true
+  vars_files:
+    - group_vars/all.yml
+  roles:
+    - swap

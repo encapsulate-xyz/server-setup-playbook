@@ -13,4 +13,3 @@ process_exporter_directories:
 
 process_exporter_config_file_path: "{{ process_exporter_config_dir }}/{{ process_exporter_config_file_name }}"
 process_exporter_log_file_path: "{{ process_exporter_log_dir }}/{{ service_identifier }}.log"
-process_exporter_extracted_binary_dir: "{{ process_exporter_default_binary_name }}-{{ process_exporter.version }}.{{ system_arch }}"
