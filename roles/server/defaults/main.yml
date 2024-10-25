@@ -1,3 +1,5 @@
 ---
-server_tailf:
-  bin_dir: /usr/local/bin
+server_tailf_bin_dir: /usr/local/bin
+
+server_tailf_wrapper_script_bin_path: "{{ server_tailf_bin_dir }}/{{ server_tailf_wrapper_script_file_name }}"
+server_tailf_autocomplete_script_file_path: /etc/bash_completion.d/{{ server_tailf_autocomplete_script_file_name }}

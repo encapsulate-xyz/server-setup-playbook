@@ -61,7 +61,7 @@
     dest: "{{ security_ssh.trusted_ca_file_path }}"
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
 
 # Configure SSH to use vault.pub as the Trusted User CA key
 - name: Configure SSH for Trusted User CA

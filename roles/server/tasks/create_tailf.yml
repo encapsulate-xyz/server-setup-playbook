@@ -1,8 +1,0 @@
----
-- name: Create tailf script
-  ansible.builtin.copy:
-    src: tailf.sh
-    dest: "{{ server_tailf.bin_dir }}/{{ server_tailf_binary_name }}"
-    owner: root
-    group: root
-    mode: "0755"

@@ -1,2 +1,3 @@
 ---
-server_tailf_binary_name: tailf
+server_tailf_wrapper_script_file_name: tailf
+server_tailf_autocomplete_script_file_name: tailf_autocomplete
