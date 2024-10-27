@@ -7,19 +7,27 @@
   ansible.builtin.apt:
     name: ufw
     state: present
-    update_cache: true
 
-- name: Enable firewall
+- name: Enable UFW with logging
   community.general.ufw:
     state: enabled
     logging: medium
 
-- name: Open ssh port
+- name: Set default incoming policy to deny
+  community.general.ufw:
+    default: deny
+    direction: incoming
+
+- name: Set default outgoing policy to allow
+  community.general.ufw:
+    default: allow
+    direction: outgoing
+
+- name: UFW - Allow SSH connections
   community.general.ufw:
     rule: limit
-    port: "{{ ssh.ports.login }}"
-    proto: tcp
-    comment: Allow SSH
+    name: OpenSSH
+    comment: limit SSH from any ip on tcp protocol
 
 - name: Allow traffic from Monitor Server to Node Exporter
   community.general.ufw:
@@ -27,7 +35,7 @@
     from_ip: "{{ monitor_server_ip }}"
     to_port: "{{ node_exporter.ports.web_listen_address }}"
     proto: tcp
-    comment: Allow traffic from Monitor Server to Node Exporter
+    comment: allow node exporter web_listen_address from {{ monitor_server_dns }} ip on tcp protocol
 
 - name: Allow traffic from Monitor Server to Process Exporter
   community.general.ufw:
@@ -35,7 +43,7 @@
     from_ip: "{{ monitor_server_ip }}"
     to_port: "{{ process_exporter.ports.web_listen_address }}"
     proto: tcp
-    comment: Allow traffic from Monitor Server to Process Exporter
+    comment: allow process exporter web_listen_address from {{ monitor_server_dns }} ip on tcp protocol
 
 - name: Disable root login over SSH
   ansible.builtin.lineinfile:
