@@ -2,9 +2,6 @@
 - name: Import setup_server playbook
   ansible.builtin.import_playbook: setup_server.yml
 
-- name: Import setup_security playbook
-  ansible.builtin.import_playbook: setup_security.yml
-
 - name: Import promtail playbook
   ansible.builtin.import_playbook: promtail.yml
 
@@ -16,3 +13,6 @@
 
 - name: Import setup_swap playbook
   ansible.builtin.import_playbook: setup_swap.yml
+
+- name: Import setup_security playbook
+  ansible.builtin.import_playbook: setup_security.yml

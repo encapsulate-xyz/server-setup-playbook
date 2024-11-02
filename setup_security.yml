@@ -7,15 +7,15 @@
     - group_vars/all.yml
     - group_vars/vault.yml
   pre_tasks:
-    - name: Resolve IP address from DNS using getent
-      ansible.builtin.command: getent ahosts {{ monitor_server_dns }}
-      register: dns_result
-      changed_when: false
+    - name: Resolve monitor server domain name to IP
+      ansible.builtin.getent:
+        database: hosts
+        key: "{{ monitor_server_dns }}"
+      register: resolved_ip
 
-    - name: Extract IP address
+    - name: Extract IP from getent output
       ansible.builtin.set_fact:
-        monitor_server_ip: "{{ dns_result.stdout.split()[0] }}"
-      changed_when: false
+        monitor_server_ip: "{{ resolved_ip.ansible_facts.getent_hosts.keys() | first }}"
   roles:
     - common
     - security
