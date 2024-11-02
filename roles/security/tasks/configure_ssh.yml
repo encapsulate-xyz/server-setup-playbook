@@ -23,11 +23,40 @@
     default: allow
     direction: outgoing
 
+- name: Stop and disable ssh.socket
+  ansible.builtin.systemd:
+    name: ssh.socket
+    state: stopped
+    enabled: false
+  register: ssh_socket_status
+  failed_when: ssh_socket_status.failed and "not found" not in ssh_socket_status.msg
+
+- name: Change SSH port in sshd_config
+  ansible.builtin.lineinfile:
+    path: "{{ security_ssh.sshd_config_file_path }}"
+    regexp: ^#?Port .*
+    line: Port {{ ssh.ports.login }}
+    state: present
+  notify:
+    - Restart service
+
+- name: Modify UFW profile for OpenSSH
+  ansible.builtin.lineinfile:
+    path: "{{ security_ssh.ufw_profile_path }}"
+    regexp: ^ports=.*
+    line: ports={{ ssh.ports.login }}/tcp
+    state: present
+    backup: true
+
+- name: Reload UFW
+  community.general.ufw:
+    state: reloaded
+
 - name: UFW - Allow SSH connections
   community.general.ufw:
     rule: limit
     name: OpenSSH
-    comment: limit SSH from any ip on tcp protocol
+    comment: limit SSH login from any ip on tcp protocol
 
 - name: Allow traffic from Monitor Server to Node Exporter
   community.general.ufw:

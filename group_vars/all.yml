@@ -67,4 +67,4 @@ mail:
 ssh:
   service_identifier: ssh
   ports:
-    login: 22
+    login: 8192
