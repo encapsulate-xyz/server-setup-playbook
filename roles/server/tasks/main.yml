@@ -16,6 +16,10 @@
     - unzip
     - cargo
 
+- name: Set the hostname
+  ansible.builtin.hostname:
+    name: "{{ server_name }}"
+
 - name: Create Users
   ansible.builtin.include_tasks: setup_login_users.yml
 

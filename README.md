@@ -1,5 +1,9 @@
 # Ansible Playbook to deploy Berachain 
 
+```bash
+ansible-playbook -i inventory/inventory.yml main.yml
+```
+
 This Ansible playbook automates the deployment and configuration of Berachain execution (beacond) and consensus (nethermind) client. It ensures that the necessary dependencies, configuration files, and services are properly set up and running.
 
 ## Table of Contents
