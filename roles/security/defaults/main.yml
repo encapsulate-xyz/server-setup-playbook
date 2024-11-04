@@ -19,6 +19,7 @@ security_logrotate:
   rkhunter_config_file: /etc/logrotate.d/rkhunter
   rkhunter_logs_path: /var/log/rkhunter/*
   opt_config_file: /etc/logrotate.d/opt_logs
+  opt_logs_path: /opt/*/log/*.log
 
 # msmtp
 security_msmtp:

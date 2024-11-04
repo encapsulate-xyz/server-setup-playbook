@@ -11,13 +11,6 @@
     - { config_file: "{{ security_logrotate.mailroot_config_file }}", log_path: "{{ security_logrotate.mailroot_logs_path }}" }
     - { config_file: "{{ security_logrotate.msmtp_config_file }}", log_path: "{{ security_logrotate.msmtp_logs_path }}" }
     - { config_file: "{{ security_logrotate.rkhunter_config_file }}", log_path: "{{ security_logrotate.rkhunter_logs_path }}" }
+    - { config_file: "{{ security_logrotate.opt_config_file }}", log_path: "{{ security_logrotate.opt_logs_path }}" }
   vars:
     log_path: "{{ item.log_path }}"
-
-- name: Create logrotate for opt application logs
-  ansible.builtin.copy:
-    src: logrotate_opt
-    owner: root
-    group: root
-    dest: "{{ security_logrotate.opt_config_file }}"
-    mode: "0644"

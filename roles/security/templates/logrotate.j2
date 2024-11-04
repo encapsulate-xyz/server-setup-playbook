@@ -1,10 +1,37 @@
 {{ log_path }} {
-    daily
-    missingok
-    rotate 7
+    # Rotate weekly if the default is not set
+    weekly
+
+    # Keep the last 4 rotated logs
+    rotate 4
+
+    # Compress rotated log files to save space
     compress
+
+    # Delay compression of the most recent rotated log until the next cycle
     delaycompress
+
+    # Ignore rotation if log file is missing
+    missingok
+
+    # Skip rotation if log file is empty
     notifempty
-    create 0640 root root
-    su root root
+
+    # Truncate the log file after copying it to avoid interrupting services
+    copytruncate
+
+    # Use date-based naming for rotated logs, like app.log-DD-MM-YYYY.gz
+    dateext
+    dateformat -%d-%m-%Y
+
+    # Ensure rotated logs have the same owner and group as the original
+    copyowner
+    copygroup
+
+    # Rotate logs based on size of 1GB
+    size 1G
+
+    # Send an email to team@encapsulate.xyz if an error occurs during rotation
+    mail team@encapsulate.xyz
+    mailfirst
 }
