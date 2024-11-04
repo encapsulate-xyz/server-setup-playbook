@@ -1,20 +1,20 @@
 server:
   http_listen_port: {{ promtail.ports.http_listen_port }}
-  grpc_listen_port: 0
+  grpc_listen_port: {{ promtail.ports.grpc_listen_port }}
 
 positions:
-  filename: {{ promtail_home_dir }}/positions.yml
+  filename: {{ promtail_positions_file_path }}
 
 clients:
   - url: http://{{ monitor_server_dns }}:3100/loki/api/v1/push
 
 scrape_configs:
-  - job_name: custom_logs
+  - job_name: opt_logs
     static_configs:
       - targets:
         - localhost
         labels:
-          job: custom_logs
+          job: opt_logs
           host: {{ ansible_hostname }}
           __path__: /opt/*/log/*
 
