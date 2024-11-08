@@ -33,9 +33,11 @@ security_rkhunter:
   default_config_file: /etc/rkhunter.conf
   config_file: /etc/rkhunter.conf.local
   log_dir: /var/log/rkhunter
+  log_file_path: /var/log/rkhunter/rkhunter.log
   cron_config_file: /etc/default/rkhunter
   etc_cron_config_file: /etc/cron.daily/rkhunter
   usr_cron_config_file: /usr/local/bin/rkhunter-cron
+  disabled_test_list: suspscan hidden_ports hidden_procs deleted_files packet_cap_apps apps ports
 
 # ssh
 security_ssh:
