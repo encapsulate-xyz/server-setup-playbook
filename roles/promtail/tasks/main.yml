@@ -32,6 +32,14 @@
     - Reload service
     - Restart service
 
+- name: Create promtail position file
+  ansible.builtin.file:
+    path: "{{ promtail_position_file_path }}"
+    state: touch
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+
 - name: Copy promtail service file
   ansible.builtin.template:
     src: promtail.service.j2

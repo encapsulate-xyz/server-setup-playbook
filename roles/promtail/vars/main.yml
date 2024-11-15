@@ -1,4 +1,4 @@
 ---
 promtail_config_file_name: promtail-config.yml
 promtail_default_binary_name: promtail-linux-amd64
-promtail_positions_file_name: posiitons.yml
+promtail_position_file_name: posiitons.yml

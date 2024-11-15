@@ -13,4 +13,4 @@ promtail_directories:
 
 promtail_log_file_path: "{{ promtail_log_dir }}/{{ service_identifier }}.log"
 promtail_config_file_path: "{{ promtail_config_dir }}/{{ promtail_config_file_name }}"
-promtail_positions_file_path: "{{ promtail_config_dir }}/{{ promtail_positions_file_name }}"
+promtail_position_file_path: "{{ promtail_config_dir }}/{{ promtail_position_file_name }}"
