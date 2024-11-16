@@ -43,6 +43,7 @@ security_rkhunter:
 security_ssh:
   sshd_config_file_path: /etc/ssh/sshd_config
   trusted_ca_file_path: /etc/ssh/{{ security_ssh_trusted_ca_file_name }}
+  ufw_profile_path: /etc/ufw/applications.d/openssh-server
 
 # sudoers
 security_sudoers:
