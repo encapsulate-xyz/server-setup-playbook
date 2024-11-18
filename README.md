@@ -1,10 +1,10 @@
-# Ansible Playbook to deploy Berachain 
+# Ansible Playbook to deploy Secure server
+
+This Ansible playbook automates the deployment and configuration of server. It ensures that the necessary dependencies, configuration files, and services are properly set for secure environment.
 
 ```bash
 ansible-playbook -i inventory/inventory.yml main.yml
 ```
-
-This Ansible playbook automates the deployment and configuration of Berachain execution (beacond) and consensus (nethermind) client. It ensures that the necessary dependencies, configuration files, and services are properly set up and running.
 
 ## Table of Contents
 
@@ -47,13 +47,13 @@ Before using this playbook, ensure the following requirements are met:
 
     Example for inventory.yml
 
-```yaml
----
-all:
-  children:
-      hosts:
-        validator.bera.testnet.encapsulate.xyz:
-```
+    ```yaml
+    ---
+    all:
+    children:
+        hosts:
+            validator.bera.testnet.encapsulate.xyz:
+    ```
 
 ## Variables
 

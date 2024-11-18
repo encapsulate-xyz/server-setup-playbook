@@ -18,6 +18,8 @@ security_logrotate:
   msmtp_logs_path: /var/log/msmtp
   rkhunter_config_file: /etc/logrotate.d/rkhunter
   rkhunter_logs_path: /var/log/rkhunter/*
+  opt_config_file: /etc/logrotate.d/opt_logs
+  opt_logs_path: /opt/*/log/*.log
 
 # msmtp
 security_msmtp:
@@ -31,9 +33,11 @@ security_rkhunter:
   default_config_file: /etc/rkhunter.conf
   config_file: /etc/rkhunter.conf.local
   log_dir: /var/log/rkhunter
+  log_file_path: /var/log/rkhunter/rkhunter.log
   cron_config_file: /etc/default/rkhunter
   etc_cron_config_file: /etc/cron.daily/rkhunter
   usr_cron_config_file: /usr/local/bin/rkhunter-cron
+  disabled_test_list: suspscan hidden_ports hidden_procs deleted_files packet_cap_apps apps ports
 
 # ssh
 security_ssh:

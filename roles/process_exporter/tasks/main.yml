@@ -35,7 +35,7 @@
 
 - name: Create process-exporter systemd unit
   ansible.builtin.template:
-    src: process-exporter.service.j2
+    src: process_exporter.service.j2
     dest: /etc/systemd/system/{{ service_identifier }}.service
     owner: root
     group: root

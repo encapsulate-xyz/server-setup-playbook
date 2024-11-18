@@ -32,6 +32,7 @@ promtail:
   file_extension: zip
   ports:
     http_listen_port: 9080
+    grpc_listen_port: 9081
 
 # ====================================================================
 # Role: Swap
