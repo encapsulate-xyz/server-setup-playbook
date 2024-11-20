@@ -3,7 +3,7 @@ server:
   grpc_listen_port: {{ promtail.ports.grpc_listen_port }}
 
 positions:
-  filename: {{ promtail_positions_file_path }}
+  filename: {{ promtail_position_file_path }}
 
 clients:
   - url: http://{{ monitor_server_dns }}:3100/loki/api/v1/push
