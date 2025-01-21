@@ -38,9 +38,6 @@ security_rkhunter:
   etc_cron_config_file: /etc/cron.daily/rkhunter
   usr_cron_config_file: /usr/local/bin/rkhunter-cron
   disabled_test_list: suspscan hidden_ports hidden_procs deleted_files packet_cap_apps apps ports
-  allowed_hidden_files:
-    - "/etc/.updated"
-    - "/etc/.resolv.conf.systemd"
 
 # ssh
 security_ssh:

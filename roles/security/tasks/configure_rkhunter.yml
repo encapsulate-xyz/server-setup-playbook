@@ -37,14 +37,6 @@
     - { regexp: ^LOGFILE, line: "LOGFILE={{ security_rkhunter.log_file_path }}" }
     - { regexp: ^DISABLE_TESTS, line: "DISABLE_TESTS={{ security_rkhunter.disabled_test_list }}" }
 
-- name: Add hidden file paths to the rkhunter configuration
-  ansible.builtin.lineinfile:
-    path: "{{ security_rkhunter.config_file }}"
-    line: "ALLOWHIDDENFILE={{ item }}"
-    create: yes
-    state: present
-  loop: "{{ security_rkhunter.allowed_hidden_files }}"
-
 - name: Configure rkhunter cron job settings
   ansible.builtin.lineinfile:
     dest: "{{ security_rkhunter.cron_config_file }}"
