@@ -1,35 +1,21 @@
 ---
 - name: Configure fail2ban
   ansible.builtin.import_tasks: configure_fail2ban.yml
-  tags: 
-    - fail2ban
 
 - name: Configure auditd
   ansible.builtin.import_tasks: configure_auditd.yml
-  tags: 
-    - auditd
 
 - name: Configure msmtp
   ansible.builtin.import_tasks: configure_msmtp.yml
-  tags: 
-    - msmtp
 
 - name: Configure rkhunter
   ansible.builtin.import_tasks: configure_rkhunter.yml
-  tags: 
-    - rkhunter
 
 - name: Configure logrotate
   ansible.builtin.import_tasks: configure_logrotate.yml
-  tags: 
-    - logrotate
 
 - name: Configure sudoers file
   ansible.builtin.import_tasks: configure_sudoers.yml
-  tags: 
-    - sudoers
 
 - name: Configure SSH
   ansible.builtin.import_tasks: configure_ssh.yml
-  tags: 
-    - ssh
