@@ -8,8 +8,8 @@
 - name: Configure msmtp
   ansible.builtin.import_tasks: configure_msmtp.yml
 
-- name: Configure rkhunter
-  ansible.builtin.import_tasks: configure_rkhunter.yml
+# - name: Configure rkhunter
+#   ansible.builtin.import_tasks: configure_rkhunter.yml
 
 - name: Configure logrotate
   ansible.builtin.import_tasks: configure_logrotate.yml
