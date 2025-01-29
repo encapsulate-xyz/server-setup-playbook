@@ -14,6 +14,7 @@
     is_system_user: false
     user_name: "{{ setup.login_users.devops }}"
     user_groups: [adm, systemd-journal]
+    user_password: "{{ vault.users.devops.password }}"
 
 - name: Add authorized key for ansible user
   ansible.posix.authorized_key:

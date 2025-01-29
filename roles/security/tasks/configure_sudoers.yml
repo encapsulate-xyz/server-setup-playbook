@@ -10,3 +10,11 @@
     - Defaults mailto="{{ mail.to }}"
     - Defaults mailerpath=/usr/sbin/sendmail
     - Defaults:ansible !mail_always
+
+- name: Copy sudoers file for devops
+  ansible.builtin.copy:
+    src: sudoers_devops
+    dest: "{{ security_sudoers.devops_file }}"
+    owner: root
+    group: root
+    mode: '0440'
