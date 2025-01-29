@@ -5,5 +5,11 @@
   gather_facts: true
   vars_files:
     - group_vars/all.yml
-  roles:
-    - swap
+
+  tasks:
+    - name: Setup environment and run nginx role
+      when: setup_swap | default(false) | bool
+      block:
+        - name: Include setup swap role
+          ansible.builtin.include_role:
+            name: swap

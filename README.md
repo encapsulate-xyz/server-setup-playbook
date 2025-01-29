@@ -3,7 +3,7 @@
 This Ansible playbook automates the deployment and configuration of server. It ensures that the necessary dependencies, configuration files, and services are properly set for secure environment.
 
 ```bash
-ansible-playbook -i inventory/inventory.yml main.yml
+ansible-playbook -i inventory/default.yml main.yml
 ```
 
 ## Table of Contents
