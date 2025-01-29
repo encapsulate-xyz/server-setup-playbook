@@ -1,5 +1,0 @@
----
-all:
-  hosts:
-    5.78.92.20:
-      server_name: testnet-hub

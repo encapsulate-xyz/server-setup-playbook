@@ -53,6 +53,12 @@ tail -f "${options[@]}" "${log_paths[@]}" | sed -E '
     s/\x1B\[[0-9;]*m//g;  # Remove existing ANSI codes
 
     # Apply color based on the first matching log level (case-insensitive)
+
+    /(^|[^a-zA-Z])(TRACE|TRC)([^a-zA-Z]|$)/I {
+        s/^/\x1B[35m/;  # Magenta for TRACE
+        s/$/\x1B[39m/;  # Reset color at the end
+        b end  # Stop further processing for this line
+    }
     /(^|[^a-zA-Z])(DEBUG|DBG)([^a-zA-Z]|$)/I {
         s/^/\x1B[36m/;  # Cyan for DEBUG
         s/$/\x1B[39m/;  # Reset color at the end
@@ -63,18 +69,13 @@ tail -f "${options[@]}" "${log_paths[@]}" | sed -E '
         s/$/\x1B[39m/;  # Reset color at the end
         b end  # Stop further processing for this line
     }
-    /(^|[^a-zA-Z])(ERROR|ERR)([^a-zA-Z]|$)/I {
-        s/^/\x1B[31m/;  # Red for ERROR
-        s/$/\x1B[39m/;  # Reset color at the end
-        b end  # Stop further processing for this line
-    }
     /(^|[^a-zA-Z])(WARN|WRN)([^a-zA-Z]|$)/I {
         s/^/\x1B[33m/;  # Yellow for WARN
         s/$/\x1B[39m/;  # Reset color at the end
         b end  # Stop further processing for this line
     }
-    /(^|[^a-zA-Z])(TRACE|TRC)([^a-zA-Z]|$)/I {
-        s/^/\x1B[35m/;  # Magenta for TRACE
+    /(^|[^a-zA-Z])(ERROR|ERR)([^a-zA-Z]|$)/I {
+        s/^/\x1B[31m/;  # Red for ERROR
         s/$/\x1B[39m/;  # Reset color at the end
         b end  # Stop further processing for this line
     }
