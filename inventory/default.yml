@@ -9,10 +9,10 @@ all:
       setup_swap: false
     67.217.61.146:
       server_name: bridge-celestia-testnet
-      setup_swap: true
+      setup_swap: false
     205.209.104.6:
       server_name: bridge.celestia-mainnet
-      setup_swap: true
+      setup_swap: false
     139.84.143.106:
       server_name: india-hub-mainnet
-      setup_swap: true
+      setup_swap: false

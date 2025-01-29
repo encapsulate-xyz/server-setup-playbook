@@ -1,0 +1,12 @@
+devops ALL=(ALL) \
+    /bin/systemctl start *, \
+    /bin/systemctl stop *, \
+    /bin/systemctl restart *, \
+    /bin/systemctl status *, \
+    /usr/bin/netstat, \
+    /usr/bin/ss, \
+    /usr/sbin/ufw status, \
+    /usr/bin/find, \
+    /usr/bin/rm, \
+    /usr/bin/du, \
+    /usr/bin/kill

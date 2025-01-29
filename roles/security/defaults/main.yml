@@ -48,3 +48,4 @@ security_ssh:
 # sudoers
 security_sudoers:
   config_file: /etc/sudoers
+  devops_file: /etc/sudoers.d/devops
