@@ -15,6 +15,7 @@
     - lz4
     - unzip
     - cargo
+    - net-tools
 
 - name: Set the hostname
   ansible.builtin.hostname:
