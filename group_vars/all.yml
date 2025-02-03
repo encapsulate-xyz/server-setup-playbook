@@ -2,7 +2,8 @@
 monitor_server_dns: monitor.encapsulate.xyz
 system_arch: linux-amd64
 tmp_dir: /tmp
-#ansible_port: 8192
+ansible_port: 8192
+
 # ====================================================================
 # Role: Node Exporter
 # ====================================================================
