@@ -16,7 +16,7 @@ scrape_configs:
         labels:
           job: opt_logs
           host: {{ ansible_hostname }}
-          env: {{ type }}
+          env: {{ env }}
           __path__: /opt/*/log/*.log
           __path_exclude__: /opt/*/log/*.*.log
 

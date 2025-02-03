@@ -4,20 +4,20 @@ all:
     176.9.8.81:
       server_name: hub-testnet
       setup_swap: false
-      type: testnet
+      env: testnet
     65.108.239.113:
       server_name: monitoring
       setup_swap: false
-      type: default
+      env: default
     67.217.61.146:
       server_name: bridge-celestia-testnet
       setup_swap: false
-      type: testnet
+      env: testnet
     205.209.104.6:
       server_name: bridge.celestia-mainnet
       setup_swap: false
-      type: mainnet
+      env: mainnet
     139.84.143.106:
       server_name: india-hub-mainnet
       setup_swap: false
-      type: mainnet
+      env: mainnet
