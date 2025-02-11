@@ -21,3 +21,7 @@ all:
       server_name: india-hub-mainnet
       setup_swap: false
       env: mainnet
+    67.217.63.234:
+      server_name: validator-sui-testnet
+      setup_swap: false
+      env: testnet
