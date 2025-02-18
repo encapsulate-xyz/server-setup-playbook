@@ -7,7 +7,7 @@
     create_home: "{{ create_home | default(true) }}"
     system: "{{ is_system_user | default(true) }}"
     home: "{{ home | default(omit) }}"
-    password: "{{ user_password | default(omit) }}"
+    password: "{{ user_password | default(omit) | password_hash('sha512') }}"
     state: present
 
 - name: Allow passwordless sudo for user

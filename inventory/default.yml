@@ -25,3 +25,7 @@ all:
       server_name: validator-sui-testnet
       setup_swap: false
       env: testnet
+    95.217.50.210:
+      server_name: finland-hub-mainnet
+      setup_swap: false
+      env: mainnet
