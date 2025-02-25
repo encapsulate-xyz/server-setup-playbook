@@ -3,6 +3,7 @@ devops ALL=(ALL) \
     /bin/systemctl stop *, \
     /bin/systemctl restart *, \
     /bin/systemctl status *, \
+    /bin/systemctl enable *, \
     /usr/bin/netstat, \
     /usr/bin/ss, \
     /usr/sbin/ufw status, \
