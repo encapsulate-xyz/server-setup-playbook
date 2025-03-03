@@ -16,6 +16,8 @@
     - unzip
     - cargo
     - net-tools
+    - nethogs
+    - tree
 
 - name: Set the hostname
   ansible.builtin.hostname:
