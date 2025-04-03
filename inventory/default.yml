@@ -26,6 +26,18 @@ all:
       setup_swap: false
       env: testnet
     95.217.50.210:
-      server_name: finland-hub-mainnet
+      server_name: h1-finland-hub-mainnet
+      setup_swap: false
+      env: mainnet
+    135.181.76.221:
+      server_name: h2-finland-hub-mainnet
+      setup_swap: false
+      env: mainnet
+    65.109.52.20:
+      server_name: h3-finland-hub-mainnet
+      setup_swap: false
+      env: mainnet
+    148.251.180.229:
+      server_name: gpu-hub-mainnet
       setup_swap: false
       env: mainnet
