@@ -20,9 +20,9 @@
     # Truncate the log file after copying it to avoid interrupting services
     copytruncate
 
-    # Use date-based naming for rotated logs, like app.log-DD-MM-YYYY.gz
+    # Use date-based naming for rotated logs, like app.log-DD-MM-YYYY-HHMM.gz
     dateext
-    dateformat -%d-%m-%Y
+    dateformat -%d-%m-%Y-%H%M
 
     # Rotate logs based on size of 1GB
     size 1G
