@@ -1,4 +1,8 @@
 ---
+- name: Set service identifier
+  ansible.builtin.set_fact:
+    service_identifier: "{{ logrotate.service_identifier }}"
+
 - name: Create logrotate configurations for audit mail msmtp rkhunter logs
   ansible.builtin.template:
     src: logrotate.j2
@@ -14,3 +18,14 @@
     - { config_file: "{{ security_logrotate.opt_config_file }}", log_path: "{{ security_logrotate.opt_logs_path }}" }
   vars:
     log_path: "{{ item.log_path }}"
+
+- name: Copy logrotate systemd timer
+  ansible.builtin.copy:
+    src: logrotate.timer
+    dest: "{{ security_logrotate.systemd_timer_path }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: 
+    - Reload service
+    - Restart timer

@@ -20,6 +20,7 @@ security_logrotate:
   rkhunter_logs_path: /var/log/rkhunter/*
   opt_config_file: /etc/logrotate.d/opt_logs
   opt_logs_path: /opt/*/log/*.log
+  systemd_timer_path: /usr/lib/systemd/system/logrotate.timer
 
 # msmtp
 security_msmtp:
