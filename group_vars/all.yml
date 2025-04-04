@@ -70,3 +70,6 @@ ssh:
   service_identifier: ssh
   ports:
     login: 8192
+
+logrotate:
+  service_identifier: logrotate
