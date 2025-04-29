@@ -49,36 +49,32 @@ if [[ ${#log_paths[@]} -eq 0 ]]; then
 fi
 
 # Start tailing the file(s) and apply sed to colorize log levels
-tail -f "${options[@]}" "${log_paths[@]}" | sed -E '
-    s/\x1B\[[0-9;]*m//g;  # Remove existing ANSI codes
+tail -f "${options[@]}" "${log_paths[@]}" | perl -pe '
+    s/\e\[[0-9;]*m//g;  # Remove existing ANSI codes
 
-    # Apply color based on the first matching log level (case-insensitive)
+    # Define log level color map
+    my %colors = (
+        TRACE => "\e[35m",
+        TRC   => "\e[35m",
+        DEBUG => "\e[36m",
+        DBG   => "\e[36m",
+        INFO  => "\e[32m",
+        INF   => "\e[32m",
+        WARN  => "\e[33m",
+        WRN   => "\e[33m",
+        ERROR => "\e[31m",
+        ERR   => "\e[31m",
+    );
 
-    /(^|[^a-zA-Z])(TRACE|TRC)([^a-zA-Z]|$)/I {
-        s/^/\x1B[35m/;  # Magenta for TRACE
-        s/$/\x1B[39m/;  # Reset color at the end
-        b end  # Stop further processing for this line
-    }
-    /(^|[^a-zA-Z])(DEBUG|DBG)([^a-zA-Z]|$)/I {
-        s/^/\x1B[36m/;  # Cyan for DEBUG
-        s/$/\x1B[39m/;  # Reset color at the end
-        b end  # Stop further processing for this line
-    }
-    /(^|[^a-zA-Z])(INFO|INF)([^a-zA-Z]|$)/I {
-        s/^/\x1B[32m/;  # Green for INFO
-        s/$/\x1B[39m/;  # Reset color at the end
-        b end  # Stop further processing for this line
-    }
-    /(^|[^a-zA-Z])(WARN|WRN)([^a-zA-Z]|$)/I {
-        s/^/\x1B[33m/;  # Yellow for WARN
-        s/$/\x1B[39m/;  # Reset color at the end
-        b end  # Stop further processing for this line
-    }
-    /(^|[^a-zA-Z])(ERROR|ERR)([^a-zA-Z]|$)/I {
-        s/^/\x1B[31m/;  # Red for ERROR
-        s/$/\x1B[39m/;  # Reset color at the end
-        b end  # Stop further processing for this line
+    # Match all log level patterns (case-insensitive)
+    my @matches = ();
+    while (m/\b(TRACE|TRC|DEBUG|DBG|INFO|INF|WARN|WRN|ERROR|ERR)\b/ig) {
+        push @matches, [ $-[0], $1 ];  # store position and match
     }
 
-    :end  # Label to stop further processing for the current line
+    if (@matches) {
+        my ($pos, $lvl) = @{$matches[0]};  # take first match in line
+        my $color = $colors{uc($lvl)};
+        $_ = "$color$_\e[39m";
+    }
 '
