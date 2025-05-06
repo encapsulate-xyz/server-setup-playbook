@@ -41,3 +41,7 @@ all:
       server_name: gpu-hub-mainnet
       setup_swap: false
       env: mainnet
+    37.27.135.246:
+      server_name: finland-hub-snapshot
+      setup_swap: false
+      env: default
