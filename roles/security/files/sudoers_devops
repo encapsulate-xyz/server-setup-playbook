@@ -8,6 +8,7 @@ devops ALL=(ALL) \
     /usr/sbin/nethogs, \
     /usr/bin/netstat, \
     /usr/bin/ss, \
+    /usr/bin/lsof, \
     /usr/sbin/ufw status, \
     /usr/bin/find, \
     /usr/bin/rm, \
