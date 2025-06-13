@@ -2,7 +2,7 @@
 all:
   hosts:
     176.9.8.81:
-      server_name: hub-testnet
+      server_name: h1-hub-testnet
       setup_swap: false
       env: testnet
     65.108.239.113:
@@ -14,7 +14,7 @@ all:
       setup_swap: false
       env: testnet
     205.209.104.6:
-      server_name: bridge-celestia-mainnet
+      server_name: h4-hub-mainnet
       setup_swap: false
       env: mainnet
     139.84.143.106:
