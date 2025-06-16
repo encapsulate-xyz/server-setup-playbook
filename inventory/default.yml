@@ -1,30 +1,17 @@
 ---
 all:
   hosts:
+    # Testnet Hub
     176.9.8.81:
-      server_name: h1-hub-testnet
+      server_name: h1-germany-hub-testnet
       setup_swap: false
       env: testnet
-    65.108.239.113:
-      server_name: monitoring
-      setup_swap: false
-      env: default
-    67.217.61.146:
-      server_name: bridge-celestia-testnet
+    64.20.36.102:
+      server_name: h2-usa-hub-testnet
       setup_swap: false
       env: testnet
-    205.209.104.6:
-      server_name: h4-hub-mainnet
-      setup_swap: false
-      env: mainnet
-    139.84.143.106:
-      server_name: india-hub-mainnet
-      setup_swap: false
-      env: mainnet
-    67.217.63.234:
-      server_name: validator-sui-testnet
-      setup_swap: false
-      env: testnet
+
+    # Mainnet Hub
     95.217.50.210:
       server_name: h1-finland-hub-mainnet
       setup_swap: false
@@ -37,11 +24,29 @@ all:
       server_name: h3-finland-hub-mainnet
       setup_swap: false
       env: mainnet
+    205.209.104.6:
+      server_name: h4-usa-hub-mainnet
+      setup_swap: false
+      env: mainnet
+    139.84.143.106:
+      server_name: h5-india-hub-mainnet
+      setup_swap: false
+      env: mainnet
+
+    # GPU Hub
     148.251.180.229:
       server_name: gpu-hub-mainnet
       setup_swap: false
       env: mainnet
+    
+    # Snapshot Hub
     37.27.135.246:
       server_name: finland-hub-snapshot
+      setup_swap: false
+      env: default
+
+    # Monitor Hub
+    65.108.239.113:
+      server_name: monitoring
       setup_swap: false
       env: default
