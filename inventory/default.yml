@@ -35,18 +35,18 @@ all:
 
     # GPU Hub
     148.251.180.229:
-      server_name: gpu-hub-mainnet
+      server_name: gpu-germany-hub-mainnet
       setup_swap: false
       env: mainnet
     
     # Snapshot Hub
     37.27.135.246:
-      server_name: finland-hub-snapshot
+      server_name: h1-finland-hub-infra
       setup_swap: false
       env: default
 
     # Monitor Hub
     65.108.239.113:
-      server_name: monitoring
+      server_name: h1-finland-hub-monitor
       setup_swap: false
       env: default
