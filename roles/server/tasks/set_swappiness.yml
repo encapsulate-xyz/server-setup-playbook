@@ -1,0 +1,14 @@
+---
+- name: Set Swappiness Value
+  ansible.builtin.copy:
+    dest: "/etc/sysctl.d/90-swappiness.conf"
+    content: |
+      vm.swappiness=10
+    owner: root
+    group: root
+    mode: "0644"
+  register: sysctl_settings
+
+- name: Apply sysctl settings
+  ansible.builtin.command: sysctl --system
+  when: sysctl_settings.changed

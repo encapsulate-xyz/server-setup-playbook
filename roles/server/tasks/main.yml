@@ -29,3 +29,6 @@
 
 - name: Setup tailf
   ansible.builtin.include_tasks: setup_tailf.yml
+
+- name: Setup swappiness
+  ansible.builtin.include_tasks: set_swappiness.yml
