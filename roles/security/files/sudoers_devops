@@ -12,6 +12,5 @@ devops ALL=(ALL) \
     /usr/sbin/ufw status, \
     /usr/bin/find, \
     /usr/bin/rm, \
-    /usr/bin/ls, \
     /usr/bin/du, \
     /usr/bin/kill
