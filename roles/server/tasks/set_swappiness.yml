@@ -1,0 +1,8 @@
+---
+- name: Ensure swappiness is 10 (persistent + live)
+  ansible.posix.sysctl:
+    name: vm.swappiness
+    value: 10
+    sysctl_file: /etc/sysctl.d/90-swappiness.conf
+    sysctl_set: yes     # apply immediately
+    state: present      # keep it in the file
