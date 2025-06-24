@@ -10,6 +10,10 @@ all:
       server_name: h2-usa-hub-testnet
       setup_swap: false
       env: testnet
+    148.113.49.86:
+      server_name: h3-india-hub-testnet
+      setup_swap: false
+      env: testnet
 
     # Mainnet Hub
     95.217.50.210:
