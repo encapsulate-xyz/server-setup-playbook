@@ -1,7 +1,6 @@
 ---
 all:
   hosts:
-    95.217.4.193:
     # Testnet Hub
     176.9.8.81:
       server_name: h1-germany-hub-testnet
