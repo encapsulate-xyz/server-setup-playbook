@@ -1,6 +1,7 @@
 ---
 all:
   hosts:
+    95.217.4.193:
     # Testnet Hub
     176.9.8.81:
       server_name: h1-germany-hub-testnet
@@ -8,6 +9,10 @@ all:
       env: testnet
     64.20.36.102:
       server_name: h2-usa-hub-testnet
+      setup_swap: false
+      env: testnet
+    148.113.49.86:
+      server_name: h3-india-hub-testnet
       setup_swap: false
       env: testnet
 
