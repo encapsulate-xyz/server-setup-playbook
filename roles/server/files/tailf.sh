@@ -62,13 +62,14 @@ tail -f "${options[@]}" "${log_paths[@]}" | perl -pe '
         INF   => "\e[32m",
         WARN  => "\e[33m",
         WRN   => "\e[33m",
+        WARNING   => "\e[33m",
         ERROR => "\e[31m",
         ERR   => "\e[31m",
     );
 
     # Match all log level patterns (case-insensitive)
     my @matches = ();
-    while (m/\b(TRACE|TRC|DEBUG|DBG|INFO|INF|WARN|WRN|ERROR|ERR)\b/ig) {
+    while (m/\b(TRACE|TRC|DEBUG|DBG|INFO|INF|WARN|WRN|WARNING|ERROR|ERR)\b/ig) {
         push @matches, [ $-[0], $1 ];  # store position and match
     }
 
