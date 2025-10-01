@@ -6,10 +6,6 @@ all:
       server_name: h1-germany-hub-testnet
       setup_swap: false
       env: testnet
-    64.20.36.102:
-      server_name: h2-usa-hub-testnet
-      setup_swap: false
-      env: testnet
     148.113.49.86:
       server_name: h3-india-hub-testnet
       setup_swap: false
@@ -26,14 +22,6 @@ all:
       env: mainnet
     135.181.76.221:
       server_name: h2-finland-hub-mainnet
-      setup_swap: false
-      env: mainnet
-    65.109.52.20:
-      server_name: h3-finland-hub-mainnet
-      setup_swap: false
-      env: mainnet
-    205.209.104.6:
-      server_name: h4-usa-hub-mainnet
       setup_swap: false
       env: mainnet
     139.84.143.106:
