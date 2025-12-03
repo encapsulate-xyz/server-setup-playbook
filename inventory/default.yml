@@ -6,10 +6,6 @@ all:
       server_name: h1-germany-hub-testnet
       setup_swap: false
       env: testnet
-    148.113.49.86:
-      server_name: h3-india-hub-testnet
-      setup_swap: false
-      env: testnet
     134.119.182.147:
       server_name: h4-france-hub-testnet
       setup_swap: false
@@ -20,18 +16,8 @@ all:
       server_name: h1-finland-hub-mainnet
       setup_swap: false
       env: mainnet
-    135.181.76.221:
-      server_name: h2-finland-hub-mainnet
-      setup_swap: false
-      env: mainnet
     139.84.143.106:
       server_name: h5-india-hub-mainnet
-      setup_swap: false
-      env: mainnet
-
-    # GPU Hub
-    204.12.246.220:
-      server_name: h1-usa-hub-gpu
       setup_swap: false
       env: mainnet
 
