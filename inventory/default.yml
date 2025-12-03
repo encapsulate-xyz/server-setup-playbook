@@ -6,14 +6,14 @@ all:
       server_name: h1-germany-hub-testnet
       setup_swap: false
       env: testnet
-    134.119.182.147:
-      server_name: h4-france-hub-testnet
-      setup_swap: false
-      env: testnet
 
     # Mainnet Hub
     95.217.50.210:
       server_name: h1-finland-hub-mainnet
+      setup_swap: false
+      env: mainnet
+    134.119.182.147:
+      server_name: h2-france-hub-mainnet
       setup_swap: false
       env: mainnet
     139.84.143.106:
