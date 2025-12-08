@@ -18,7 +18,6 @@
     - net-tools
     - nethogs
     - tree
-    - python3-passlib
 
 - name: Set the hostname
   ansible.builtin.hostname:
