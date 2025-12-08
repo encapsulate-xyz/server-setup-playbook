@@ -34,3 +34,6 @@
 
 - name: Restrict cron to root user
   ansible.builtin.include_tasks: restrict_cron.yml
+
+- name: Include Configure Sysctl task
+  ansible.builtin.import_tasks: configure_sysctl.yml
