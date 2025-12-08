@@ -1,0 +1,13 @@
+---
+- name: Restrict cron to root user
+  ansible.builtin.copy:
+    dest: /etc/cron.allow
+    content: root
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Ensure cron.deny is absent
+  ansible.builtin.file:
+    path: /etc/cron.deny
+    state: absent

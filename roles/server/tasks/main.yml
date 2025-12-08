@@ -32,3 +32,6 @@
 
 - name: Setup swappiness
   ansible.builtin.include_tasks: set_swappiness.yml
+
+- name: Restrict cron to root user
+  ansible.builtin.include_tasks: restrict_cron.yml
