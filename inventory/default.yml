@@ -32,3 +32,9 @@ all:
       server_name: h1-finland-hub-monitor
       setup_swap: false
       env: default
+
+    # Platform Hub
+    95.216.22.203:
+      server_name: h1-finland-hub-platform
+      setup_swap: false
+      env: default
